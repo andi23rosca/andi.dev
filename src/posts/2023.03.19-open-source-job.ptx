@@ -1,0 +1,16 @@
+◊{
+  export const meta = {
+    slug: "how-my-open-source-package-landed-me-a-job",
+    date: "2023.03.19"
+  }
+}
+
+◊title{How my open source package landed me a job}
+
+This post is part reflection on what has happened, part advice on how you could leverage your own open source contributions to do the same.
+
+But, the advice part of this post should first be prefaced with a big: ◊bold{IT'S MOSTLY DOWN TO LUCK}.
+I do think there are ways to maximize that luck though.
+
+◊hr
+
