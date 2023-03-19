@@ -1,0 +1,38 @@
+§{
+  export const meta = {
+    slug: "the nicest typescript feature you'll never use",
+    date: "2023.03.19"
+  }
+}
+
+§title{The nicest typescript feature you'll (almost) never need}
+
+I've been working on §link({url: "https://github.com/andi23rosca/solid-leaflet"}){solid-leaflet} in my spare time and ran into a pretty curious type problem.
+
+§aside{leaflet js is a interactive map library that I've been trying to integrate into solid's reactivity and component system}
+
+Leaflet has its own classes for managing different types of UI bits inside the map.
+
+There is a §inline{Map} instance that handles the map pane, a §inline{Marker} class to add pins on the map, a §inline{Popup} class to render popups, etc.
+
+Most of these should be translated from class instances to solid components.
+
+§layout{
+  §column({size: "50%"}){
+    From this:
+    §code({lang: "typescript"}){
+      const map = new Map();
+      const marker = new Marker();
+      marker.addTo(map);
+    }
+  }
+  §column({size: "50%"}){
+    To this:
+    §code({lang: "tsx"}){
+      <Map>
+        <Marker />
+      </Map>
+    }
+  }
+}
+
