@@ -166,7 +166,7 @@ header {
 .home-link img {
 	width: 15rem;
 	margin: 1rem 0;
-	height: 104;
+	height: 104px;
 }
 
 .home-link:link:not(:hover) {
