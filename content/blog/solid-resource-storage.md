@@ -1,6 +1,6 @@
 ---
 title: Syncing solid-js resources to a global store
-description: This is a post on My Blog about agile frameworks.
+description: Most complex web-apps make use of a global state, and tying data management and fetching to components makes it clunky to properly sync data between global and local. Solve all issues in your solid-js app by using the storage option on resources.
 date: 2023-11-21
 tags:
 	- solidjs
