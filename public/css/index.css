@@ -298,3 +298,10 @@ a[href].header-anchor:focus,
 h2+.header-anchor {
 	font-size: 1.5em;
 }
+
+blockquote {
+	margin-left: 0;
+	border-left: 4px black solid;
+	padding-left: 1rem;
+	font-size: 1.3rem;
+}
