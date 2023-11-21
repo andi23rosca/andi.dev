@@ -55,6 +55,15 @@ pre[class*='language-'] {
 	background: #1e1e3f;
 }
 
+@media (prefers-color-scheme: dark) {
+
+	:not(pre)>code[class*='language-'],
+	pre[class*='language-'] {
+		background: #192025;
+	}
+}
+
+
 /* Inline code */
 :not(pre)>code[class*='language-'] {
 	padding: 0.1em;
