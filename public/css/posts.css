@@ -11,6 +11,12 @@ main aside {
 	border-radius: 4px;
 }
 
+@media (prefers-color-scheme: dark) {
+	main aside {
+		background-color: #252d34;
+	}
+}
+
 main blockquote {
 	margin-left: 0;
 	border-left: 4px black solid;
