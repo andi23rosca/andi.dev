@@ -3,3 +3,17 @@ main img {
 	height: 100%;
 	object-fit: contain;
 }
+
+main aside {
+	font-size: 0.875rem;
+	background-color: var(--color-gray-20);
+	padding: 1rem;
+	border-radius: 4px;
+}
+
+main blockquote {
+	margin-left: 0;
+	border-left: 4px black solid;
+	padding-left: 1rem;
+	font-size: 1rem;
+}
