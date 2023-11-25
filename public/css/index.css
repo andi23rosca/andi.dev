@@ -22,7 +22,7 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--color-gray-20: #e0e0e0;
+		--color-gray-20: #252d34;
 		--color-gray-50: #C0C0C0;
 		--color-gray-90: #dad8d8;
 
@@ -55,7 +55,7 @@ html {
 }
 
 body {
-	max-width: 40em;
+	max-width: 41em;
 }
 
 /* https://www.a11yproject.com/posts/how-to-hide-content/ */
@@ -297,4 +297,11 @@ a[href].header-anchor:focus,
 
 h2+.header-anchor {
 	font-size: 1.5em;
+}
+
+#subscribe-form {
+	border-radius: 4px;
+	margin-bottom: 4rem;
+	padding: 1rem;
+	background-color: var(--color-gray-20);
 }
