@@ -1,8 +1,7 @@
 ---
 title: Making a shitty programming language from scratch. Part 1.5
 description: A smaller installment after part 1, focused on cleaning up the code and adding a couple of useful utils that'll be needed in part 2.
-date: 2023-11-23
-draft: true
+date: 2023-11-30
 tags:
   - the-shitty-series
   - make-a-language
@@ -25,7 +24,7 @@ This post will focus on cleaning up our code and introducing a couple of utiliti
 
 ## Introducing the standard library (also known as STD)
 
-You can think of the standard library as a set of functionality that a language comes with out of the box. There's some pedantic differences between functionality built-in directly into the language, and a standard library, but let's not worry about that.
+You can think of the standard library as a set of functionality that a language comes with out of the box. There's some pedantic differences between functionality that's built directly into the language, and a standard library, but let's not worry about that.
 
 For our purposes, the STD and built-in functionality are one and the same. And right now, we only have 2 functions in our standard library: "+" and "-".
 
@@ -84,15 +83,15 @@ const EVALUATE = (input) => {
 }
 ```
 
-If you'll notice the body of the `EVALUATE` function, we've replaced the if statements for each individual operation with a generic `if(std[fn])` statement that will check if the function exists in the std, and if it does it will call it with the `arguments` array and return the result.
+You'll notice that in the body of the `EVALUATE` function, we've replaced the if statements for each individual operation with a generic `if(std[fn])` statement. This will check if the function exists in the std, and if it does it will call it with the `arguments` array and return the result.
 
 Now the body of the evaluator should stay slim, even if we add another 50 functions in the standard library.
 
 ## Printing
 
-I should've started this series with implementing a print function and running a hello world program.
+I should've started this series with implementing a print function and running a "hello world" program.
 
-But it's not too late to add one now. It will be useful for debugging future programs once the language gets more complex.
+It's not too late to add one now. It will be useful for debugging future programs once the language gets more complex.
 
 First we will add a new function to the std:
 
@@ -103,9 +102,11 @@ const std = {
 	"print": (arguments) => console.log(...arguments)
 }
 ```
-Luckily, `console.log` already handles printing multiple arguments so our print function is a very thin wrapper around the console logger.
+Luckily, `console.log` already handles printing multiple arguments so our print function is a very thin wrapper around it.
 
-Since we already have the generic if statement in the evaluator, we don't need to add any extra code, running
+Since we already have the generic if statement in the evaluator, we don't need to add any extra code.
+
+Running
 
 ```js
 EVALUATE(["print", "hello", "world"]);
@@ -126,17 +127,17 @@ EVALUATE(["print", ["+", 4, ["-", 3, 10]]]) // should log -3
 
 	One of the most important features of a functional language is that **everything** is an expression. That means that anything you write in that language will result in a value.
 
-	A good explanation is the difference between if statements and the ternary operator.
+	A good explanation for statements vs expressions is the difference between if statements and the ternary operator.
 
 	You can't do `const myVar = if(x) 10 else 20;`. The if/else statement doesn't result in a value, it just runs the code inside the branch.
 
-	But you can do `const myVar = x ? 10 : 20;` because the ternary operator is an expression, and expressions always result in values
+	But you can do `const myVar = x ? 10 : 20;` because the ternary operator is an expression, and expressions always result in values.
 
 </aside>
 
 Let's make the print function an expression and not just a statement.
 
-It's very simple, all it has to do to be an expression is to result in a value. And how do functions result in values? By returning a value.
+It's very simple, all it has to do to be an expression is to result in a value. And how do functions result in values? By returning something.
 
 ```js
 const std = {
@@ -154,25 +155,36 @@ Ok, printing is done, let's switch gears to other improvements we can make.
 
 ## Running multiple statements
 
-Have you noticed that our evaluator only accepts one top-level function at a time?
+Have you noticed that our evaluator only accepts one top-level function at a time? We can only evaluate either a `print`, `+`, or `-` function. These functions accept arguments that are other function calls, but we can't string multiple function calls at the top-level.
 
-What if you want to run multiple statements unrelated to each other, like in a real language?
+What if you want to run multiple unrelated instructions, like in a real language?
 
-There are a few ways to do this, like allowing the evaluator to accept an array of statements as well, which would look like:
+There are a few ways to do this, like allowing the evaluator to accept an array of statements as well as a single function call. Which would look like:
 ```js
 EVALUATE([
 	["print", "hi"],
 	["print", "this is another statement"],
-])
+]) // the 2 print statements are unrelated to each other
 ```
 
 But that can introduce weird edge-cases to handle all throughout our interpreter.
 
-Remember that we call evaluate on all of the arguments recursively. So we'll then have to implement some code to distinguish if an array is a special array made of function calls (like the example above), or if it's the function call syntax.
+Remember that we call evaluate on all of the arguments recursively. So we'll then have to implement some code to distinguish arrays made of instructions, or function calls.
 
-The easier choice is to do what we've been doing until now, adding another function to our std.
+Maybe it's possible to distinguish:
+```js
+["print", ["+", 1, 2], ["-", 6, 8]]
+```
+From:
+```js
+[["print", ["+", 1, 2]], ["print", ["-", 6, 8]]]
+```
 
-We'll call this function `run`, since it'll be used to run multiple unrelated instructions. Adjusting the example above, the program would look like this instead:
+But do we want to have to deal with that?
+
+The easier choice is to do what we've been doing until now: add another function to our std.
+
+We'll call this function `run`, since it'll be used to run multiple instructions. Adjusting the example above, the program would look like this instead:
 
 ```js
 EVALUATE(["run",
@@ -186,22 +198,22 @@ But what should run return?
 
 This is where we will take inspiration from functional languages again.
 
-It's usually the case that the last expression is going to be used as the return value.
+In an imperative language like JS, we have an explicit return statement. And a return statement is the last operation that happens before a function call results in a value.
 
-<aside>
+In functional languages, every instruction is also an expression that results in a value. The usual convention is that rather than using an explicit return syntax, they implicitly return the last expression's value.
 
-	<sub>Note<sub>
+Think of this imaginary language's function:
+```js
+function test() {
+	"a string";
+	someFunctionCall();
+	10;
+}
+```
 
-	In an imperative language like JS, we have an explicit return statement. And a return statement is the last operation that happens before a function call results in a value.
+The last evaluated expression is the hardcoded number `10`, and that's what the `test` function will return implicitly.
 
-	Functional languages flip that logic on it's head. The last expression that runs will result in a value, and that value will be returned.
-
-	So there's an implicit return without needing to write it out.
-
-</aside>
-
-
-Let's implement returning the last argument:
+Now let's implement returning the last argument for the `run` function:
 
 ```js
 const std = {
@@ -210,7 +222,7 @@ const std = {
 }
 ```
 
-We could also change our print function to also return only the last argument for uniformity. We'll extract the logic for getting the last argument in a separate function as well:
+We could change our print function to also return only the last argument, for uniformity. We'll extract the logic for getting the last argument in a separate function as well:
 
 ```js
 const std = {
@@ -225,7 +237,7 @@ const std = {
 }
 ```
 
-> 🎉 Still no need to change the `EVALUATE` function's body!
+> 🎉 Notice how there's still no need to change the `EVALUATE` function's body, even with all these std changes!
 
 
 ## Final code
@@ -235,6 +247,9 @@ Now we're in a good place to implement variables in Part 2. Stay tuned for it.
 Here is the full code up until now
 
 ```js
+const sum = (numbers) =>
+	numbers.reduce((sum, n) => sum + n, 0);
+
 const std = {
 	"+": (args) => sum(args),
 	"-": ([first, ...rest]) => first - sum(rest),
