@@ -2,6 +2,8 @@
 title: Making a shitty programming language from scratch. Part 1.5
 description: A smaller installment after part 1, focused on cleaning up the code and adding a couple of useful utils that'll be needed in part 2.
 date: 2023-11-30
+featuredImage: ../shitty-language-part-1/wobbly_wheel.png
+featuredImageDesc: A sketch of a wobbly wheel
 tags:
   - the-shitty-series
   - make-a-language

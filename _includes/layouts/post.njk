@@ -2,6 +2,12 @@
 layout: layouts/base.njk
 ---
 {%- css %}{% include "public/css/posts.css" %}{%- endcss %}
+
+{%- if featuredImage %}
+	{% image featuredImage,
+	featuredImageDesc %}
+{%- endif %}
+
 <h1>{{ title }}</h1>
 
 <ul class="post-metadata">
