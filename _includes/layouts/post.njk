@@ -1,7 +1,14 @@
 ---
 layout: layouts/base.njk
 ---
-{%- css %}{% include "public/css/posts.css" %}{%- endcss %}
+{%- css %}
+{% include "public/css/posts.css" %}
+{%- if css %}
+	{% for cssFile in css %}
+		{% include {{cssFile}} %}
+	{% endfor %}
+{% endif %}
+{%- endcss %}
 
 {%- if featuredImage %}
 	{% image featuredImage,
