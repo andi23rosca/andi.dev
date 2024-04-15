@@ -1,0 +1,31 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Pollen.JS",
+	"scopeName": "source.pjs",
+	"patterns": [
+		{
+			"name": "variable.other.constant",
+			"match": "◊\\w+"
+		},
+		{
+			"begin": "◊\\w+{",
+			"end": "}",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.code.open"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.code.close"
+				}
+			},
+			"name": "meta.embedded.block.javascript",
+			"patterns": [
+				{
+					"include": "source.js"
+				}
+			]
+		}
+	]
+}

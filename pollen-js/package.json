@@ -1,0 +1,38 @@
+{
+	"name": "pollen-js",
+	"displayName": "Pollen.JS syntax",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.88.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "pollen-js",
+				"aliases": [
+					"Pollen.JS",
+					"pollen-js"
+				],
+				"extensions": [
+					".pjs"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "pollen-js",
+				"scopeName": "source.pjs",
+				"path": "./syntaxes/pollen-js.tmLanguage.json",
+				"embeddedLanguages": {
+					"source.js": "javascript",
+					"meta.embedded.block.javascript": "javascript"
+				}
+			}
+		]
+	}
+}
