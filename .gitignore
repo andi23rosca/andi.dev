@@ -1,0 +1,3 @@
+src/**/compiled/
+src/**/*.html
+dist/
