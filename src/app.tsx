@@ -1,18 +1,21 @@
 import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
-import { Suspense } from "solid-js";
+import { Suspense, createEffect } from "solid-js";
 import "./app.css";
+import { Layout } from "./components/Layout";
 
 export default function App() {
 	return (
 		<Router
-			root={(props) => (
-				<main>
-					<a href="/">Index</a>
-					<a href="/posts/test-post">Test</a>
-					<Suspense>{props.children}</Suspense>
-				</main>
-			)}
+			root={(props) => {
+				console.log("zzz", props.data);
+
+				return (
+					<Layout>
+						<Suspense>{props.children}</Suspense>
+					</Layout>
+				);
+			}}
 		>
 			<FileRoutes />
 		</Router>

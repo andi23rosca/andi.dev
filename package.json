@@ -2,8 +2,8 @@
   "name": "example-with-mdx",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev",
-    "build": "vinxi build",
+    "dev": "vinxi dev & tcm --watch ./src",
+    "build": "tcm ./src && vinxi build",
     "start": "vinxi start"
   },
   "dependencies": {
@@ -20,6 +20,9 @@
     "yarn": "3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.4"
+    "@biomejs/biome": "^1.6.4",
+    "autoprefixer": "^10.4.19",
+    "tailwindcss": "^3.4.3",
+    "typed-css-modules": "^0.9.1"
   }
 }
