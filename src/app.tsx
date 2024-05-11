@@ -8,8 +8,6 @@ export default function App() {
 	return (
 		<Router
 			root={(props) => {
-				console.log("zzz", props.data);
-
 				return (
 					<Layout>
 						<Suspense>{props.children}</Suspense>

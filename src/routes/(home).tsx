@@ -1,4 +1,5 @@
 import { For } from "solid-js";
+import { posts } from "virtual:blog-posts";
 
 const links = [
 	"https://github.com/andi23rosca",
@@ -47,6 +48,17 @@ const Homepage = () => {
 
 			<section>
 				<h2 class="text-lg font-medium">Latest posts</h2>
+
+				<ol>
+					<For each={posts}>
+						{(post) => (
+							<li class="flex flex-col">
+								<a href={`/blog/${post.slug}`}>{post.title}</a>
+								<span>{new Date(post.date).toLocaleDateString()}</span>
+							</li>
+						)}
+					</For>
+				</ol>
 			</section>
 		</div>
 	);

@@ -17,7 +17,11 @@ export const Layout: ParentComponent = (props) => {
 								srcset="/logo-dark.png"
 								media="(prefers-color-scheme:dark)"
 							/>
-							<img class="max-w-64" alt="andi.dev logo" src="/logo-light.png" />
+							<img
+								class="max-w-64 h-28"
+								alt="andi.dev logo"
+								src="/logo-light.png"
+							/>
 						</picture>
 					</a>
 				</header>

@@ -1,0 +1,26 @@
+---
+date: 2023.11.21
+slug: solid-resource-storage
+tags:
+  - solidjs
+  - webdev
+title: Syncing solid-js resources to a global store
+---
+
+Solid provides a createResource function that gives you a few niceties out of the box for working with async data.
+
+Stuff like:
+
+- automatic refetching on reactivity changes
+- signals for checking if the data is loading
+- and of course, Suspense.
+
+Suspense can't be triggered any other way, so most solid apps are going to be using resources extensively.
+
+The drawback is that createResource pushes you into a pattern of data locality, where the data is only being used in the component that defined the resources (or it's children).
+
+> Data locality is nice until it isn't
+
+Most complex web-apps make use of a global state, and tying data management and fetching to components makes it clunky to properly sync data between global and local.
+
+A naive first approach for achieving this syncing might look like this:
