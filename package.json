@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vinxi dev & tcm --watch ./src",
     "build": "tcm ./src && vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "preview": "npx http-server ./.output/public"
   },
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
     "autoprefixer": "^10.4.19",
+    "http-server": "^14.1.1",
     "remark-frontmatter": "^5.0.0",
     "tailwindcss": "^3.4.3",
     "to-vfile": "^8.0.0",

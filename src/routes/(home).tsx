@@ -20,7 +20,7 @@ const Homepage = () => {
 					<p>
 						Mail:{" "}
 						<a
-							class="text-green-600 dark:text-green-500 underline underline-offset-2"
+							class="text-green-600 dark:text-green-500 underline underline-offset-2 rounded"
 							target="_blank"
 							rel="noreferrer"
 							href="mailto:hi@andi.dev"
@@ -33,8 +33,13 @@ const Homepage = () => {
 					<ul>
 						<For each={links}>
 							{(link) => (
-								<li class="mb-1 text-sm text-zinc-700 dark:text-zinc-300 font-light hover:underline underline-offset-2 hover:text-green-600 hover:dark:text-green-500">
-									<a target="_blank" rel="noreferrer" href={link}>
+								<li class="">
+									<a
+										target="_blank"
+										rel="noreferrer"
+										href={link}
+										class="rounded mb-1 text-sm text-zinc-700 dark:text-zinc-300 font-light hover:underline underline-offset-2 hover:text-green-600 hover:dark:text-green-500"
+									>
 										{link.replace("https://", "")}
 									</a>
 								</li>
@@ -47,14 +52,21 @@ const Homepage = () => {
 			<div aria-hidden class="border border-dashed border-gray-200 my-6" />
 
 			<section>
-				<h2 class="text-lg font-medium">Latest posts</h2>
+				<h2 class="text-lg font-medium mb-4">Latest posts</h2>
 
-				<ol>
+				<ol class="flex flex-col gap-4">
 					<For each={posts}>
 						{(post) => (
 							<li class="flex flex-col">
-								<a href={`/blog/${post.slug}`}>{post.title}</a>
-								<span>{new Date(post.date).toLocaleDateString()}</span>
+								<a
+									class="text-lg font-light rounded"
+									href={`/blog/${post.slug}`}
+								>
+									{post.title}
+								</a>
+								<span class="text-sm text-zinc-500 font-light">
+									{new Date(post.date).toLocaleDateString()}
+								</span>
 							</li>
 						)}
 					</For>

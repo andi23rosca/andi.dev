@@ -28,10 +28,17 @@ export const blogPostsPlugin = (): Plugin => {
 				.map((file) => {
 					const f = readSync(resolve("src/routes/blog", file));
 					matter(f);
-					return f.data.matter;
-				});
+					return {
+						...(f.data.matter as object),
+						slug: file.replace(".mdx", ""),
+					} as { date: string; slug: string };
+				})
+				.sort(
+					(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+				);
 
-			return `export const posts = ${JSON.stringify(blogPosts)};`;
+			return `export const posts = ${JSON.stringify(blogPosts)};
+export default {};`;
 		},
 	};
 };

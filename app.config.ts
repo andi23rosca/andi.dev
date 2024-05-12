@@ -1,7 +1,7 @@
 import { defineConfig } from "@solidjs/start/config";
 /* @ts-ignore */
 import pkg from "@vinxi/plugin-mdx";
-import { blogPostsPlugin } from "./plugins/blogPostsPlugin";
+import { blogPostsPlugin } from "./vite-plugins/blogPostsPlugin";
 import remarkFrontmatter from "remark-frontmatter";
 
 const { default: mdx } = pkg;
