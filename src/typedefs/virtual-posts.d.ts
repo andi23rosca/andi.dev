@@ -5,5 +5,6 @@ declare module "virtual:blog-posts" {
 		slug: string;
 		tags: string[];
 		featuredImage?: string;
+		description: string;
 	}[];
 }

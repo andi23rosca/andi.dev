@@ -1,10 +1,10 @@
 ---
+title: Syncing solid-js resources to a global store
+description: Most complex web-apps make use of a global state, and tying data management and fetching to components makes it clunky to properly sync data between global and local. Solve all issues in your solid-js app by using the storage option on resources.
 date: 2023-11-21
 tags:
   - solidjs
   - webdev
-title: Syncing solid-js resources to a global store
-description: Most complex web-apps make use of a global state, and tying data management and fetching to components makes it clunky to properly sync data between global and local. Solve all issues in your solid-js app by using the storage option on resources.
 ---
 
 Solid provides a `createResource` function that gives you a few niceties out of the box for working with async data.

@@ -1,5 +1,5 @@
 import { defineConfig } from "@solidjs/start/config";
-/* @ts-ignore */
+//@ts-expect-error
 import pkg from "@vinxi/plugin-mdx";
 import { blogPostsPlugin } from "./vite-plugins/blogPostsPlugin";
 import remarkFrontmatter from "remark-frontmatter";
