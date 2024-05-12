@@ -25,7 +25,7 @@ Most complex web-apps make use of a global state, and tying data management and 
 
 A naive first approach for achieving this syncing might look like this:
 
-```tsx
+```tsx lang="tsx"
 const [data] = createResource(fetchData);
 const [state, setState] = useContext(GlobalState);
 
@@ -43,7 +43,8 @@ So syncing only works one way `resource -> store`.
 Solid resources accept a `storage` property that can be used to override the internal logic for holding the resource's data.
 
 We can imagine the simplified internals of a `createResource` to look something like this:
-```ts
+
+```tsx lang="tsx"
 const createResource = (fetchingFunction) => {
   const [data, setData] = createSignal();
   createEffect(() => {
@@ -59,7 +60,7 @@ The `storage` option would let us replace that `createSignal` call with any othe
 
 The solid docs have an example of using the storage option to store the data in a solid store instead of a signal. See `createDeepSignal` [here](https://www.solidjs.com/docs/latest/api#createresource:~:text=New%20in%201.5.0%20Experimental).
 
-```ts
+```ts lang="ts"
 function createDeepSignal<T>(value: T): Signal<T> {
   const [store, setStore] = createStore({ value });
   return [
@@ -81,12 +82,12 @@ In this example, using a store alongside the `reconcile` function for setting da
 But what if we take this example further, and instead of creating a new store for each resource, we create a custom storage function that gets and sets data to a global store?
 
 Let's assume we have a solid store we can access through a hook like:
-```ts
+```ts lang="ts"
 const [state, setState] = useGlobal();
 ```
 
 And that the store's state is:
-```ts
+```ts lang="ts"
 {
   songs: [
     {name: 'Never Gonna Give You Up', rating: 8},
@@ -99,7 +100,7 @@ What we would want is that in our component, we use a resource that fetches the 
 
 But that the resource is backed by the global state, so that if there are any changes to the songs in the global state, the changes would be reflected in the resource, and the other way around as well. Two-way binding: `store <-> resource`.
 
-```tsx
+```tsx lang="tsx"
 const storeBackedSongs = () => {
   const [state, setState] = useGlobal();
 
@@ -131,7 +132,7 @@ Now if somewhere else in the app someone changes the songs through the store:
 If the resource and component are still mounted, the `SongsList` component will update with the empty array value.
 
 Similarly, if you change the value of the songs resource, either by refetching or with a mutate, that will update the store state and reflect the changes in all places where `store.songs` is used.
-```ts
+```ts lang="ts"
 const [songs, {mutate, refetch}] = createResource(fetchSongs, {storage: storeBackedSongs});
 
 // Both of these calls will update not only the resource's data, but store.songs as well

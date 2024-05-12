@@ -1,5 +1,7 @@
+import dayjs from "dayjs";
 import { For } from "solid-js";
 import { posts } from "virtual:blog-posts";
+import { Posts } from "~/components/Posts";
 
 const links = [
 	"https://github.com/andi23rosca",
@@ -54,23 +56,7 @@ const Homepage = () => {
 			<section>
 				<h2 class="text-lg font-medium mb-4">Latest posts</h2>
 
-				<ol class="flex flex-col gap-4">
-					<For each={posts}>
-						{(post) => (
-							<li class="flex flex-col">
-								<a
-									class="text-lg font-light rounded"
-									href={`/blog/${post.slug}`}
-								>
-									{post.title}
-								</a>
-								<span class="text-sm text-zinc-500 font-light">
-									{new Date(post.date).toLocaleDateString()}
-								</span>
-							</li>
-						)}
-					</For>
-				</ol>
+				<Posts posts={posts} />
 			</section>
 		</div>
 	);

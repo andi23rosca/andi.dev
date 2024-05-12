@@ -6,11 +6,8 @@ export const Layout: ParentComponent = (props) => {
 			<a href="#main-content" class="visually-hidden">
 				Skip to main content
 			</a>
-			<main
-				id="main-content"
-				class="container max-w-screen-sm px-4 mx-auto mt-6"
-			>
-				<header class="flex flex-col items-center justify-center p-10">
+			<div class="container max-w-screen-md px-4 mx-auto mt-6">
+				<header class="flex flex-col items-center justify-center gap-8 p-10">
 					<a href="/">
 						<picture>
 							<source
@@ -24,10 +21,21 @@ export const Layout: ParentComponent = (props) => {
 							/>
 						</picture>
 					</a>
+
+					<nav>
+						<ul class="flex items-center gap-4">
+							<li class="hover:underline underline-offset-2">
+								<a href="/">Home</a>
+							</li>
+							<li class="hover:underline underline-offset-2">
+								<a href="/tags">Tags</a>
+							</li>
+						</ul>
+					</nav>
 				</header>
 
-				{props.children}
-			</main>
+				<main id="main-content">{props.children}</main>
+			</div>
 		</>
 	);
 };

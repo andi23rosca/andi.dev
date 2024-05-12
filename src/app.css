@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-*:focus {
-  @apply outline-none ring-4 ring-green-400 dark:ring-green-600;
-} */
-
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);

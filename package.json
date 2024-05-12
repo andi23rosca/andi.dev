@@ -2,8 +2,8 @@
   "name": "example-with-mdx",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev & tcm --watch ./src",
-    "build": "tcm ./src && vinxi build",
+    "dev": "vinxi dev",
+    "build": "vinxi build",
     "start": "vinxi start",
     "preview": "npx http-server ./.output/public"
   },
@@ -23,15 +23,21 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
+    "@mapbox/rehype-prism": "^0.9.0",
     "@mdx-js/rollup": "^3.0.1",
     "@solidjs/meta": "^0.29.3",
     "autoprefixer": "^10.4.19",
+    "dayjs": "^1.11.11",
+    "hast-util-to-string": "^3.0.0",
     "http-server": "^14.1.1",
+    "refractor": "^4.8.1",
+    "rehype-mdx-code-props": "^3.0.0",
     "remark-frontmatter": "^5.0.0",
     "solid-jsx": "^1.1.4",
     "tailwindcss": "^3.4.3",
     "to-vfile": "^8.0.0",
     "typed-css-modules": "^0.9.1",
+    "unist-util-visit": "^5.0.0",
     "vfile-matter": "^5.0.0",
     "vite": "^5.2.11"
   }

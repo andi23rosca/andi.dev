@@ -1,8 +1,10 @@
 import { defineConfig } from "@solidjs/start/config";
 //@ts-expect-error
 import pkg from "@vinxi/plugin-mdx";
-import { blogPostsPlugin } from "./vite-plugins/blogPostsPlugin";
+import { blogPostsPlugin } from "./build-helpers/blogPostsPlugin";
 import remarkFrontmatter from "remark-frontmatter";
+import rehypeMdxCodeProps from "rehype-mdx-code-props";
+import { mdxPrism } from "./build-helpers/mdxPrism";
 
 const { default: mdx } = pkg;
 export default defineConfig({
@@ -11,6 +13,7 @@ export default defineConfig({
 		plugins: [
 			mdx.withImports({})({
 				remarkPlugins: [remarkFrontmatter],
+				rehypePlugins: [rehypeMdxCodeProps, mdxPrism],
 				jsx: true,
 				jsxImportSource: "solid-js",
 				providerImportSource: "solid-mdx",
