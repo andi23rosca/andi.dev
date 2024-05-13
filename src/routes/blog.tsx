@@ -3,17 +3,7 @@ import type { RouteSectionProps } from "@solidjs/router";
 import { Meta, Title } from "@solidjs/meta";
 import { posts } from "virtual:blog-posts";
 import { MDXProvider } from "solid-mdx";
-import {
-	Blockquote,
-	H2,
-	H3,
-	H4,
-	Li,
-	Ol,
-	P,
-	Pre,
-	Ul,
-} from "~/components/Markdown";
+import { markdownComponents } from "~/components/Markdown";
 import dayjs from "dayjs";
 import "../css/prism-theme.css";
 
@@ -50,19 +40,7 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 				</div>
 			</div>
 
-			<MDXProvider
-				components={{
-					p: P,
-					li: Li,
-					ol: Ol,
-					ul: Ul,
-					blockquote: Blockquote,
-					pre: Pre,
-					h2: H2,
-					h3: H3,
-					h4: H4,
-				}}
-			>
+			<MDXProvider components={markdownComponents}>
 				{props.children}
 			</MDXProvider>
 		</article>

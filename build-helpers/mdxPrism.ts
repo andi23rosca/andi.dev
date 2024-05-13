@@ -27,10 +27,10 @@ export const mdxPrism = () => {
 		}, {});
 
 		const lang = attrs.lang;
-
-		if (lang === null) {
+		if (!lang) {
 			return;
 		}
+
 		const result = refractor.highlight(nodeToString(node), lang);
 
 		node.children = result.children;

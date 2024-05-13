@@ -56,13 +56,13 @@ pre[class*='language-'] {
   background: #1e1e3f;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
 
   :not(pre)>code[class*='language-'],
   pre[class*='language-'] {
-    background: #192025;
+    @apply bg-slate-800;
   }
-}
+} */
 
 
 /* Inline code */

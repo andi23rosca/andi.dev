@@ -1,14 +1,6 @@
 import dayjs from "dayjs";
 import { type Component, For } from "solid-js";
-
-export type Post = {
-	title: string;
-	date: Date;
-	slug: string;
-	tags: string[];
-	featuredImage?: string;
-	description: string;
-};
+import type { Post } from "~/types";
 
 export const Posts: Component<{ posts: Post[] }> = (props) => {
 	return (
