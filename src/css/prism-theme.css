@@ -53,16 +53,16 @@ pre[class*='language-'] {
 
 :not(pre)>code[class*='language-'],
 pre[class*='language-'] {
-  background: #1e1e3f;
+  @apply bg-slate-800 border border-slate-900;
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
 
   :not(pre)>code[class*='language-'],
   pre[class*='language-'] {
-    @apply bg-slate-800;
+    @apply bg-slate-800 border border-slate-700;
   }
-} */
+}
 
 
 /* Inline code */

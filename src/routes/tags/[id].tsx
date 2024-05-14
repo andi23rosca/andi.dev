@@ -9,7 +9,7 @@ const TagId: Component<RouteSectionProps<unknown>> = (props) => {
 	return (
 		<Show when={tag()} fallback={<div>No posts with that tag</div>}>
 			<div>
-				<h2>Tag: {tag().id}</h2>
+				<h1 class="text-lg font-bold mb-6">Tag: {tag().id}</h1>
 
 				<Posts posts={tag().posts.map((i) => posts[i])} />
 			</div>

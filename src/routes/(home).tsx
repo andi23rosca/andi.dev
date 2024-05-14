@@ -20,7 +20,7 @@ const Homepage = () => {
 						programming interest I've gotten into lately.
 					</p>
 					<p>
-						Mail:{" "}
+						E-mail:{" "}
 						<a
 							class="text-green-600 dark:text-green-500 underline underline-offset-2 rounded"
 							target="_blank"
@@ -40,7 +40,7 @@ const Homepage = () => {
 										target="_blank"
 										rel="noreferrer"
 										href={link}
-										class="rounded mb-1 text-sm text-zinc-700 dark:text-zinc-300 font-light hover:underline underline-offset-2 hover:text-green-600 hover:dark:text-green-500"
+										class="rounded mb-1 text-sm text-gray-700 dark:text-gray-300 font-light hover:underline underline-offset-2 hover:text-green-600 hover:dark:text-green-500"
 									>
 										{link.replace("https://", "")}
 									</a>

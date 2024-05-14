@@ -11,7 +11,7 @@ export const Posts: Component<{ posts: Post[] }> = (props) => {
 						<a class="text-lg font-light rounded" href={`/blog/${post.slug}`}>
 							{post.title}
 						</a>
-						<span class="text-sm text-zinc-500 font-light">
+						<span class="text-sm text-gray-500 font-light">
 							{dayjs(post.date).format("MMMM YYYY")}
 						</span>
 					</li>

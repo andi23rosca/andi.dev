@@ -1,4 +1,4 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import type { RouteSectionProps } from "@solidjs/router";
 import { Meta, Title } from "@solidjs/meta";
 import { posts } from "virtual:blog-posts";
@@ -6,11 +6,16 @@ import { MDXProvider } from "solid-mdx";
 import { markdownComponents } from "~/components/Markdown";
 import dayjs from "dayjs";
 import "../css/prism-theme.css";
+import type { Post } from "~/types";
 
 const Blog = (props: RouteSectionProps<unknown>) => {
 	const meta = () =>
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		posts.find((p) => props.location.pathname.endsWith(p.slug))!;
+		posts.find((p) => props.location.pathname.endsWith(p.slug)) as Post;
+	const index = () => posts.indexOf(meta());
+
+	const prevMeta = () =>
+		index() === posts.length - 1 ? undefined : posts[index() + 1];
+	const nextMeta = () => (index() === 0 ? undefined : posts[index() - 1]);
 
 	return (
 		<article class="pt-4 pb-20">
@@ -19,7 +24,7 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 			<Meta name="description" content={meta().description} />
 			<Meta name="og:description" content={meta().description} />
 
-			<h1 class="text-3xl text-zinc-800 dark:text-zinc-200 font-bold mb-3">
+			<h1 class="text-3xl text-gray-800 dark:text-gray-200 font-bold mb-6">
 				{meta().title}
 			</h1>
 
@@ -43,6 +48,31 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 			<MDXProvider components={markdownComponents}>
 				{props.children}
 			</MDXProvider>
+
+			<div class="mt-12 flex flex-col gap-4">
+				<Show when={prevMeta()} fallback={<div />}>
+					<div class="flex gap-2">
+						<span>Previous:</span>
+						<a
+							class="underline underline-offset-2"
+							href={`/blog/${prevMeta()?.slug}`}
+						>
+							{prevMeta()?.title}
+						</a>
+					</div>
+				</Show>
+				<Show when={nextMeta()} fallback={<div />}>
+					<div class="flex gap-2">
+						<span>Next:</span>
+						<a
+							class="underline underline-offset-2"
+							href={`/blog/${nextMeta()?.slug}`}
+						>
+							{nextMeta()?.title}
+						</a>
+					</div>
+				</Show>
+			</div>
 		</article>
 	);
 };
