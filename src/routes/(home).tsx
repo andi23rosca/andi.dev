@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { For } from "solid-js";
 import { posts } from "virtual:blog-posts";
 import { Posts } from "~/components/Posts";
