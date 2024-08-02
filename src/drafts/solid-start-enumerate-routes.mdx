@@ -1,0 +1,48 @@
+---
+date: 20204-05-11
+tags:
+  - solidjs
+  - webdev
+title: How to enumerate routes in solid-start
+---
+
+This website is built with [solid-start](https://start.solidjs.com/getting-started/what-is-solidstart).
+
+I needed a way to enumerate all of the posts under `/blog` so that I could dynamically generate lists, both for the [home page](/), and for the tags pages: [/tags/solidjs](/tags/solidjs).
+
+However, the solid-start `<FileRouter>` doesn't expose any of that information, either at build-time or run-time. We have to figure it out ourselves.
+
+My first thought was to have a script that watches the directory and writes to a file.
+
+That would've worked. But while browsing through the docs trying to figure out how to get a file watcher to be part of the vite dev server, I found out about [virtual modules](https://vitejs.dev/guide/api-plugin#virtual-modules-convention).
+
+Essentially, you can define a `js` module that has dynamic content by exporting a `js` string.
+
+```js lang="js" lines="2,14"
+export default function myPlugin() {
+  const virtualModuleId = 'virtual:my-module'
+  const resolvedVirtualModuleId = '\0' + virtualModuleId
+
+  return {
+    name: 'my-plugin', // required, will show up in warnings and errors
+    resolveId(id) {
+      if (id === virtualModuleId) {
+        return resolvedVirtualModuleId
+      }
+    },
+    load(id) {
+      if (id === resolvedVirtualModuleId) {
+        return `export const msg = "from virtual module"`
+      }
+    },
+  }
+}
+```
+
+After adding `myPlugin` to your vite plugins list, you can import the virtual module anywhere in the code and use it as if it were a real file.
+
+```js lang="js"
+import {msg} from "virtual:my-module"
+```
+
+This seemed more "elegant" than a file watcher.

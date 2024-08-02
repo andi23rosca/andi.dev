@@ -1,0 +1,34 @@
+---
+date: 20204-05-11
+tags:
+  - solidjs
+  - webdev
+title: This blog uses solid-start.
+description: How to set up a blog using solid-start and mdx.
+---
+
+This website uses [solid-start](https://start.solidjs.com/getting-started/what-is-solidstart).
+
+solid-start is a Next.js-like framework for creating SSR / SSG websites. But instead of react, it builds on top of solid-js.
+
+I've been using solid and solid-start professionally for almost 2 years. And while solid-js feels rock-solid, solid-start still feels rough around the edges.
+
+
+For each of the features I wanted to implement, I ran into issues that delayed this from being a weekend project into taking about 4 weekends instead.
+
+Here's what I wanted to accomplish:
+1. Use [mdx](https://mdxjs.com/) for writing the posts
+2. Define metadata for each post in the same mdx file
+3. Full SSG
+4. Code highlighting at compile time
+5. Tags
+
+And here's how I did it:
+
+## Using mdx
+
+MDX is markdown that you can intersprinkle with jsx.
+
+The initial scaffolding is easy, follow [these steps](https://docs.solidjs.com/solid-start/getting-started), and choose the `with-mdx` option.
+
+I opted to have my posts live under the `/blog` path.

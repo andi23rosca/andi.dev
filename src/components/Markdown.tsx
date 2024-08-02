@@ -7,11 +7,15 @@ import {
 
 const P: ParentComponent = (props) => <p class="mb-4">{props.children}</p>;
 
-const Ol: ParentComponent = (props) => <ol class="mb-4">{props.children}</ol>;
-const Ul: ParentComponent = (props) => <ul class="mb-4">{props.children}</ul>;
+const Ol: ParentComponent = (props) => (
+	<ol class="mb-4 list-decimal">{props.children}</ol>
+);
+const Ul: ParentComponent = (props) => (
+	<ul class="mb-4 list-disc">{props.children}</ul>
+);
 
 const Li: ParentComponent = (props) => (
-	<li class="list-disc ml-6 mb-2">{props.children}</li>
+	<li class="ml-6 mb-2">{props.children}</li>
 );
 
 const Blockquote: ParentComponent = (props) => (
@@ -20,10 +24,12 @@ const Blockquote: ParentComponent = (props) => (
 	</blockquote>
 );
 
-const Pre: ParentComponent<{ lang: string }> = (props) => {
+const Pre: ParentComponent<{ lang: string; lines?: string }> = (props) => {
 	return (
 		<div class="mt-4 mb-8">
-			<pre class={`language-${props.lang}`}>{props.children}</pre>
+			<pre class={`language-${props.lang}`} data-line={props.lines}>
+				{props.children}
+			</pre>
 		</div>
 	);
 };

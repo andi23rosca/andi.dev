@@ -3,7 +3,7 @@ import type { ParentComponent } from "solid-js";
 export const Layout: ParentComponent = (props) => {
 	return (
 		<>
-			<a href="#main-content" class="visually-hidden">
+			<a href="#main-content" class="sr-only">
 				Skip to main content
 			</a>
 			<div class="container max-w-screen-md px-4 mx-auto mt-6">

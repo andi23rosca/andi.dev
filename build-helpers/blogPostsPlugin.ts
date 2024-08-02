@@ -10,6 +10,18 @@ export const blogPostsPlugin = (): Plugin => {
 
 	return {
 		name: "blog-posts-gen",
+		configureServer(server) {
+			server.watcher.on("change", (filePath) => {
+				if (
+					!filePath.includes("/src/routes/blog") &&
+					!filePath.includes("blogPostsPlugin.ts")
+				)
+					return;
+				const module = server.moduleGraph.getModuleById(virtualModuleId);
+				console.log("zzz", module);
+				if (module) server.reloadModule(module);
+			});
+		},
 		resolveId(id) {
 			if (id === virtualModuleId) {
 				return resolvedVirtualModuleId;
