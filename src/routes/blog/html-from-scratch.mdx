@@ -1,0 +1,75 @@
+---
+title: HTML from scratch
+description: Learn how HTML works by designing it from scratch
+date: 2024-08-02
+tags:
+  - webdev
+---
+import { Aside, PostImage, Dialog } from "~/components/Markdown"
+
+## Why does HTML look like that and how does it actually work?
+
+We'll answer that question by going through the problems that HTML was designed to solve, while also designing our own HTML from scratch.
+
+This article is meant for aspiring web developers that are starting out with learning HTML.
+
+---
+
+<Dialog>
+
+I'm a researcher from 1993. I want to write a document and put it up on this thing called the internet.
+
+I wrote my document in Microsoft Word and I want to share it with the world.
+
+</Dialog>
+
+<Dialog reverse>
+
+I'm a browser from 1993. I don't care about Microsoft Word. 
+
+I want to display simple documents that anyone can write in any text editor.
+
+</Dialog>
+
+## First design
+
+Let's break down the first requirements that came up when HTML was first conceived.
+
+> Disclaimer: I didn't even bother googling how HTML was created. 
+  This is a revisionists history for the purpose of learning HTML, not what actually went down.
+
+Users wanted:
+- To share documents with other people
+- To format their documents with the usual text formatting options: **Headings, Bold, Italics, Images**
+
+Browser developers wanted:
+- An accessible format that could be authored in any plain text editor
+- A way to link from one document to another
+- A format that is easy for machines to understand
+- For people to use their browsers
+
+
+Let's go through each requirement and let that guide us into designing how HTML would work.
+
+### File formats
+
+What is a file format? 
+
+At the deepest depths of a computer, everything is represented using numbers (in binary form).
+
+The letter `A` has the number `65` associated with it for example. 
+
+When the computer program reads a file and it's expecting to be reading alphabetical characters, when it sees `65` it will "know" that that is the letter `A`. 
+
+A file containing `65` and `66` would be read as `AB`:
+
+<PostImage src="/images/html-from-scratch/65-66-to-AB.png" alt="Visualization of a file containing 65 and 66 being turned into AB"/>
+
+That's how `.txt` files work. And most other files types that you can open in Notepad on Windows, or TextEdit on Mac OS.
+
+
+But many other files types out there don't work like this. 
+
+You can write a program that saves the letters `AB` to the disk as `01`. As long as you also write a program that will 
+
+### An accessible format that could be authored in any plain text editor

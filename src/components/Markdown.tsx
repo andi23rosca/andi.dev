@@ -7,6 +7,8 @@ import {
 
 const P: ParentComponent = (props) => <p class="mb-4">{props.children}</p>;
 
+const Hr: Component = () => <hr class="my-6" />;
+
 const Ol: ParentComponent = (props) => (
 	<ol class="mb-4 list-decimal">{props.children}</ol>
 );
@@ -19,7 +21,7 @@ const Li: ParentComponent = (props) => (
 );
 
 const Blockquote: ParentComponent = (props) => (
-	<blockquote class="px-4 py-2 text-gray-700 dark:text-gray-300 italic">
+	<blockquote class="px-4 text-gray-800 dark:text-gray-200 italic">
 		{props.children}
 	</blockquote>
 );
@@ -133,6 +135,42 @@ export const Aside: ParentComponent = (props) => (
 	</aside>
 );
 
+export const Dialog: ParentComponent<{ reverse?: boolean; bg?: string }> = (
+	props,
+) => (
+	<div
+		class="flex"
+		classList={{
+			"justify-start": !props.reverse,
+			"justify-end": props.reverse,
+		}}
+	>
+		<blockquote class="bg-blue-600 text-white py-4 rounded-3xl px-6 shadow-xl relative [&>p]:mb-2 [&>*:last-child]:mb-0 mb-4 max-w-lg">
+			<svg
+				aria-hidden
+				width="27"
+				height="12"
+				viewBox="0 0 27 12"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				classList={{
+					"left-[-12px]": !props.reverse,
+					"right-[-12px] -scale-x-100": props.reverse,
+				}}
+				class="absolute size-10 bottom-[-12px]"
+			>
+				<title>Speech bubble arrow</title>
+				<path
+					d="M10.6603 0C8.53615 4.65559 4.72099 8.37745 0 10.3803C2.45805 11.4232 5.16166 12 8 12C16.2897 12 23.4302 7.0796 26.6603 0H10.6603Z"
+					class="text-blue-600 fill-current"
+				/>
+			</svg>
+
+			{props.children}
+		</blockquote>
+	</div>
+);
+
 export const markdownComponents = {
 	a: A,
 	p: P,
@@ -144,4 +182,5 @@ export const markdownComponents = {
 	h2: H2,
 	h3: H3,
 	h4: H4,
+	hr: Hr,
 };

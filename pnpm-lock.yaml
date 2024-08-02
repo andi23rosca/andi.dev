@@ -20,6 +20,9 @@ dependencies:
   prismjs:
     specifier: ^1.29.0
     version: 1.29.0
+  solid-icons:
+    specifier: ^1.1.0
+    version: 1.1.0(solid-js@1.8.16)
   solid-js:
     specifier: ^1.8.16
     version: 1.8.16
@@ -5854,6 +5857,14 @@ packages:
 
   /smob@1.5.0:
     resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==}
+    dev: false
+
+  /solid-icons@1.1.0(solid-js@1.8.16):
+    resolution: {integrity: sha512-IesTfr/F1ElVwH2E1110s2RPXH4pujKfSs+koT8rwuTAdleO5s26lNSpqJV7D1+QHooJj18mcOiz2PIKs0ic+A==}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.8.16
     dev: false
 
   /solid-js@1.8.16:
