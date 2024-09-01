@@ -1,6 +1,7 @@
 import { A } from "@solidjs/router";
 import { For, type ParentComponent } from "solid-js";
 import { TextHoverJump } from "./TextHoverJump";
+import { Button } from "./Button";
 
 export const Layout: ParentComponent = (props) => {
 	return (

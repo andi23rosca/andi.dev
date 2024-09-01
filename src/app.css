@@ -19,7 +19,24 @@
   @apply bg-black text-white dark:bg-white dark:text-black;
 }
 
+.button {
+  border: var(--border-thickness) solid;
+  padding:
+    calc(var(--line-height) / 2 - var(--border-thickness)) calc(1ch - var(--border-thickness));
+  margin: 0;
+  height: calc(var(--line-height) * 2);
+  width: auto;
+  overflow: visible;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+}
 
+.button:focus:not(:active) {
+  --border-thickness: 3px;
+  outline: none;
+}
 
 hr {
   @apply h-2v block relative text-black dark:text-white border-none my-1v;
@@ -31,7 +48,6 @@ hr:after {
   top: calc(var(--line-height) - var(--border-thickness));
   border-top: calc(var(--border-thickness) * 3) double;
 }
-
 
 .jump-text:hover>.jump-text {
   animation: jump 0.25s ease-in-out;

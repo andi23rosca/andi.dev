@@ -4,6 +4,7 @@ import {
 	type ParentComponent,
 	type JSXElement,
 	createSignal,
+	Show,
 } from "solid-js";
 
 const P: ParentComponent = (props) => <p class="mt-1v">{props.children}</p>;
@@ -17,14 +18,16 @@ const Ul: ParentComponent = (props) => (
 
 const Li: ParentComponent = (props) => <li class="">{props.children}</li>;
 
-const Blockquote: ParentComponent = (props) => (
+export const Blockquote: ParentComponent = (props) => (
 	<blockquote class="my-2v pl-1h text-slate-700 dark:text-slate-200 font-medium italic grid grid-cols-[max-content_1fr]">
 		<span class="w-2h">{"> "}</span>
 		<div class="[&>p]:mt-0">{props.children}</div>
 	</blockquote>
 );
 
-const Pre: ParentComponent<{ lang: string; lines?: string }> = (props) => {
+const Pre: ParentComponent<{ lang: string; lines?: string; file?: string }> = (
+	props,
+) => {
 	const [copied, setCopied] = createSignal(false);
 	let ref!: HTMLPreElement;
 
@@ -38,7 +41,10 @@ const Pre: ParentComponent<{ lang: string; lines?: string }> = (props) => {
 
 	return (
 		<div class="my-1v">
-			<div class="bg-black text-white dark:bg-white dark:text-white flex justify-end px-1h text-sm leading-1">
+			<div class="bg-black text-white dark:bg-white dark:text-black flex justify-between px-1h text-sm leading-1">
+				<Show when={props.file} fallback={<span aria-hidden />}>
+					<span>{props.file}</span>
+				</Show>
 				<button type="button" onClick={onCopy}>
 					{copied() ? "Copied!" : "Copy code"}
 				</button>

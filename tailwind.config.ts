@@ -60,6 +60,9 @@ const config: Config = {
 			listStyleType: {
 				square: "square",
 			},
+			boxShadow: {
+				box: "3px 3px 0px",
+			},
 			fontSize: {
 				"2v": "2rem",
 			},

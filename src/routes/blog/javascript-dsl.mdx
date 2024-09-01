@@ -7,17 +7,19 @@ tags:
 series: weekend-series
 ---
 
-## Contents
+import { DSLNestingProps } from "~/components/javascript-dsl/DSLNestingProp"
 
 **A domain-specific language(DSL) is a small language made for a specific purpose.** It's the opposite of general languages like: JavaScript, Python, Go, etc. which are designed to do *everything*.
 
 Think of `SQL` or `HTML`. SQL is made to more easily query structured data, and HTML is made to more easily represent the structure of a document/website.
 
+## Contents
+
 ## Why make your own DSL? 
 Because it's _cool_. It's also much easier to do than making a general language. And it might even be a useful tool to be able to whip out in certain cases.
 
 ## Why in a weekend?
-I really liked the approachable nature of [Ray tracing in one weekend](https://raytracing.github.io/). It condensed a complex subject into a project that can be finished in more or less a weekend.
+I really liked the approachable nature of [Ray tracing in one weekend](https://raytracing.github.io/). It condensed a complex subject into a project that can be finished in a few days.
 
 This article will take less than that, a few hours to a day.
 
@@ -72,4 +74,100 @@ You write some text somewhere, maybe a file, maybe a string. Some code then pick
 
 The first step of building `jayson` is to set up that pipeline.
 
-To keep things easy in the beginning, we'll be writing the `jayson` code directly as JS strings.
+To keep things easy in the beginning, we'll be writing the jayson code directly as JS strings.
+
+
+### What's our pipeline?
+We need 2 things to get started: a JSON object to query, and jayson string.
+
+Fire up your editor and create a `jayson.js` file:
+
+```js lang="js" file="jayson.js"
+const o = {
+  name: "My cool object",
+  isItCool: true,
+}
+
+const jayson = "grab name"
+```
+
+`o` will be our queryable object, and we'll store the code for the jayson language in the `jayson` variable.
+
+`grab` is the first bit of functionality that we'll implement.
+
+Given the keywork `grab` and a property name, it will select that property from the object.
+
+So the code `grab name` should return `"My cool object"`.
+
+
+In the same file, after the declarations, we'll create a function that can take the input and return the right output:
+```js lang="js" file="jayson.js"
+const o = {
+  name: "My cool object",
+  isItCool: true,
+};
+const jayson = "grab name";
+const query = (obj, input) => {
+  // logic will go here
+}
+query(o, jayson); // will return "My cool object"
+```
+
+### Parsing the jayson input
+The query function should make sure that the jayson code is in the right format, and then extract the relevant information from it so that we can use it.
+```js lang="js" file="jayson.js"
+const query = (obj, input) => {
+  const [keyword, property] = input.split(" ");
+  if(keyword !== "grab") 
+    throw Error("Invalid jayson syntax.");
+  return obj[property];
+}
+```
+
+Look at that, your first DSL!
+
+If you run `console.log(query(o, jayson))` you should see  `"My cool object"` being logged.
+
+Now try to replace the jayson string to grab the other property.
+
+What happens if you do `grab someRandomProp`?
+
+### Nested properties
+Modify the query object so it has a nested property:
+```js lang="js" file="jayson.js"
+const o = {
+  name: "My cool object",
+  isItCool: true,
+  metadata: {
+    coolnessScore: 100,
+  }
+};
+```
+Running `grab metadata.coolnessScore` will return `undefined`.
+
+The query function takes the whole of `metadata.coolnessScore` as one string and uses that as a proprty, which doesn't exist.
+
+It should split the properties by '.' instead and do multiple nested queries
+```js lang="js" file="jayson.js"
+const query = (obj, input) => {
+  const [keyword, property] = input.split(" ");
+  if(keyword !== "grab") 
+    throw Error("Invalid jayson syntax.");
+
+  // Updated code
+  const nested = properties.split(".");
+
+  let result = obj; // result starts out as the full object
+
+  for (const property in nested) {
+    // as we loop through the properties, first "metadata", then "coolnessScore",
+    // we set the result as each nested query that we performed
+    result = result[property];
+  }
+  return result;
+}
+```
+
+Explained visually:
+
+<DSLNestingProps />
