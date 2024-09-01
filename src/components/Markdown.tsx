@@ -3,31 +3,47 @@ import {
 	createMemo,
 	type ParentComponent,
 	type JSXElement,
+	createSignal,
 } from "solid-js";
 
-const P: ParentComponent = (props) => <p class="mb-4">{props.children}</p>;
+const P: ParentComponent = (props) => <p class="mt-1v">{props.children}</p>;
 
 const Ol: ParentComponent = (props) => (
-	<ol class="mb-4 list-decimal">{props.children}</ol>
+	<ol class="list-decimal">{props.children}</ol>
 );
 const Ul: ParentComponent = (props) => (
-	<ul class="mb-4 list-disc">{props.children}</ul>
+	<ul class="list-square">{props.children}</ul>
 );
 
-const Li: ParentComponent = (props) => (
-	<li class="ml-6 mb-2">{props.children}</li>
-);
+const Li: ParentComponent = (props) => <li class="ml-2h">{props.children}</li>;
 
 const Blockquote: ParentComponent = (props) => (
-	<blockquote class="px-4 py-2 text-gray-700 dark:text-gray-300 italic">
-		{props.children}
+	<blockquote class="my-2v pl-1h text-slate-700 dark:text-slate-200 font-medium italic grid grid-cols-[max-content_1fr]">
+		<span class="w-2h">{"> "}</span>
+		<div class="[&>p]:mt-0">{props.children}</div>
 	</blockquote>
 );
 
 const Pre: ParentComponent<{ lang: string; lines?: string }> = (props) => {
+	const [copied, setCopied] = createSignal(false);
+	let ref!: HTMLPreElement;
+
+	const onCopy = () => {
+		setCopied(true);
+		navigator.clipboard.writeText(ref.innerText);
+		setTimeout(() => {
+			setCopied(false);
+		}, 1500);
+	};
+
 	return (
-		<div class="mt-4 mb-8">
-			<pre class={`language-${props.lang}`} data-line={props.lines}>
+		<div class="my-1v">
+			<div class="bg-black text-white dark:bg-white dark:text-white flex justify-end px-1h text-sm leading-1">
+				<button type="button" onClick={onCopy}>
+					{copied() ? "Copied!" : "Copy code"}
+				</button>
+			</div>
+			<pre ref={ref} class={`language-${props.lang}`} data-line={props.lines}>
 				{props.children}
 			</pre>
 		</div>
@@ -39,10 +55,7 @@ const headingLink = (children: JSXElement) =>
 
 const HeadlineLink: Component<{ link: string; class: string }> = (props) => {
 	return (
-		<a
-			href={props.link}
-			class="text-gray-300 hover:text-gray-400 dark:text-gray-600 dark:hover:text-gray-500 relative top-[2px]"
-		>
+		<a href={props.link} class="relative top-[1px]">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
@@ -71,7 +84,7 @@ const HeadlineLink: Component<{ link: string; class: string }> = (props) => {
 const H2: ParentComponent = (props) => (
 	<h2
 		id={headingLink(props.children)}
-		class="text-2xl font-bold mt-12 mb-5 flex items-center gap-4"
+		class="text-2xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h"
 	>
 		{props.children}
 		<HeadlineLink class="w-5 h-5" link={`#${headingLink(props.children)}`} />
@@ -81,7 +94,7 @@ const H2: ParentComponent = (props) => (
 const H3: ParentComponent = (props) => (
 	<h3
 		id={headingLink(props.children)}
-		class="text-xl font-bold mt-12 mb-5 flex items-center gap-4"
+		class="text-xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h"
 	>
 		{props.children}
 		<HeadlineLink class="w-4 h-4" link={`#${headingLink(props.children)}`} />
@@ -91,7 +104,7 @@ const H3: ParentComponent = (props) => (
 const H4: ParentComponent = (props) => (
 	<h4
 		id={headingLink(props.children)}
-		class="text-lg font-bold mt-12 mb-5 flex items-center gap-4"
+		class="text-lg leading-1 font-bold mt-2v mb-1v flex items-center gap-1h"
 	>
 		{props.children}
 		<HeadlineLink class="w-3 h-3" link={`#${headingLink(props.children)}`} />
@@ -118,18 +131,25 @@ export const PostImage: Component<{
 	src: string;
 	alt: string;
 	attr?: JSXElement;
+	class?: string;
 }> = (props) => {
 	return (
 		<div>
-			<img src={props.src} alt={props.alt} class="w-full rounded" />
+			<img
+				src={props.src}
+				alt={props.alt}
+				class="w-full"
+				classList={{ [props.class || ""]: !!props.class }}
+			/>
 			{props.attr}
 		</div>
 	);
 };
 
 export const Aside: ParentComponent = (props) => (
-	<aside class="border-l-4 border-blue-300 dark:border-blue-800 pl-4 bg-blue-50 dark:bg-slate-800 pb-3 pt-5 mb-4">
-		{props.children}
+	<aside class="border-l-2 border-black dark:border-white pl-1h mt-1v">
+		<div class="uppercase text-sm leading-1 font-medium select-none">Aside</div>
+		<div class="[&_*:first-child]:mt-0">{props.children}</div>
 	</aside>
 );
 

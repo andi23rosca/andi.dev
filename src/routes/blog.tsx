@@ -18,28 +18,29 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 	const nextMeta = () => (index() === 0 ? undefined : posts[index() - 1]);
 
 	return (
-		<article class="pt-4 pb-20">
+		<article class="pb-5v">
 			<Title>{meta().title}</Title>
 			<Meta name="og:title" content={meta().title} />
 			<Meta name="description" content={meta().description} />
 			<Meta name="og:description" content={meta().description} />
 
-			<h1 class="text-3xl text-gray-800 dark:text-gray-200 font-bold mb-6">
-				{meta().title}
-			</h1>
+			<h1 class="text-2v leading-2 font-bold mb-1v">{meta().title}</h1>
 
-			<div class="flex items-center gap-6 mb-6">
+			<div class="flex items-center gap-4h mb-2v text-sm leading-1">
 				<p>{dayjs(meta().date).format("D MMMM YYYY")}</p>
 
-				<div class="flex items-center gap-2">
+				<div class="">
 					<For each={meta().tags}>
 						{(tag, index) => (
-							<a
-								href={`/tags/${tag}`}
-								class="font-medium underline underline-offset-2 italic"
-							>
-								{tag + (index() === meta().tags.length - 1 ? "" : ",")}
-							</a>
+							<>
+								<a
+									href={`/tags/${tag}`}
+									class="font-medium underline underline-offset-2 italic"
+								>
+									{tag}
+								</a>
+								{index() === meta().tags.length - 1 ? "" : ", "}
+							</>
 						)}
 					</For>
 				</div>
@@ -49,9 +50,9 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 				{props.children}
 			</MDXProvider>
 
-			<div class="mt-12 flex flex-col gap-4">
+			<div class="mt-3v flex flex-col gap-1v">
 				<Show when={prevMeta()} fallback={<div />}>
-					<div class="flex gap-2">
+					<div class="flex gap-1h">
 						<span>Previous:</span>
 						<a
 							class="underline underline-offset-2"
@@ -62,7 +63,7 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 					</div>
 				</Show>
 				<Show when={nextMeta()} fallback={<div />}>
-					<div class="flex gap-2">
+					<div class="flex gap-1h">
 						<span>Next:</span>
 						<a
 							class="underline underline-offset-2"

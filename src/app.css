@@ -1,3 +1,89 @@
+@import url('https://fonts.cdnfonts.com/css/jetbrains-mono-2');
+
+:root {
+  --line-height: 1.2rem;
+  --border-thickness: 2px;
+  font-optical-sizing: auto;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+*::selection {
+  @apply bg-black text-white dark:bg-white dark:text-black;
+}
+
+
+
+hr {
+  @apply h-2v block relative text-black dark:text-white border-none my-1v;
+}
+
+hr:after {
+  @apply block absolute left-0 h-0 w-full border-black dark:border-white;
+  content: "";
+  top: calc(var(--line-height) - var(--border-thickness));
+  border-top: calc(var(--border-thickness) * 3) double;
+}
+
+
+.jump-text:hover>.jump-text {
+  animation: jump 0.25s ease-in-out;
+  animation-delay: var(--animation-delay);
+}
+
+@keyframes jump {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+
+/* DEBUG UTILITIES */
+
+.debug .debug-grid {
+  --line-height: 1.2rem;
+  --text-color: #000000;
+  --background-color: #FFFFFF;
+  --color: color-mix(in srgb, var(--text-color) 10%, var(--background-color) 90%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-image:
+    repeating-linear-gradient(var(--color) 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(90deg, var(--color) 0 1px, transparent 1px 100%);
+  background-size: 1ch var(--line-height);
+  margin: 0;
+}
+
+code:not(pre code) {
+  @apply bg-black text-white dark:bg-white dark:text-black px-1h;
+  @apply selection:dark:bg-black selection:dark:text-white selection:bg-white selection:text-black;
+}
+
+.debug .off-grid {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.debug-toggle-label {
+  text-align: right;
+}
+
+.debug img {
+  /* border: 1px solid black; */
+}

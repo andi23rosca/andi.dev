@@ -4,14 +4,14 @@ import type { Post } from "~/types";
 
 export const Posts: Component<{ posts: Post[] }> = (props) => {
 	return (
-		<ol class="flex flex-col gap-4">
+		<ol class="">
 			<For each={props.posts}>
 				{(post) => (
-					<li class="flex flex-col">
-						<a class="text-lg font-light rounded" href={`/blog/${post.slug}`}>
+					<li class="list-square ml-2h mb-1v">
+						<a class="font-medium underline block" href={`/blog/${post.slug}`}>
 							{post.title}
 						</a>
-						<span class="text-sm text-gray-500 font-light">
+						<span class="text-xs leading-1 text-slate-600 dark:text-slate-400">
 							{dayjs(post.date).format("MMMM YYYY")}
 						</span>
 					</li>
