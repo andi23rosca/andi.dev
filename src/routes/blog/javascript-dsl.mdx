@@ -124,7 +124,7 @@ const query = (obj, input) => {
 }
 ```
 
-Look at that, your first DSL!
+Look at that, your first DSL! And it only took 5 lines of code.
 
 If you run `console.log(query(o, jayson))` you should see  `"My cool object"` being logged.
 
@@ -155,7 +155,7 @@ const query = (obj, input) => {
     throw Error("Invalid jayson syntax.");
 
   // Updated code
-  const nested = properties.split(".");
+  const nested = property.split(".");
 
   let result = obj; // result starts out as the full object
 
@@ -168,6 +168,55 @@ const query = (obj, input) => {
 }
 ```
 
-Explained visually:
+The for loop is doing the heavy lifting for handling the nested props. Here it is explained visually:
 
 <DSLNestingProps />
+
+### Multiple properties
+How do we grab multiple properties from one object? We can't. Not yet at least.
+
+The next extension to the `grab` feature, is adjusting the syntax so that running `grab isItCool, metadata.coolnessScore` will return both values.
+
+But grabbing 2 or more properties from an object will result in 2 values. JavaScript can't do multiple returns.
+
+We'll have to wrap the 2 values in either an array or an object.
+
+Either
+
+`[true, 100]` or `{isItCool: true, coolnessScore: 100}`
+
+The object wrapping is more readable so we'll go with that.
+
+For consitency, we'll change the single property grab to return an object too.
+
+`grab isItCool` will return `{isItCool: true}` instead of `true`.
+.split(/, |,| /)
+
+```js lang="js" file="jayson.js"
+...
+const query = (obj, input) => {
+  ...error handling code omitted
+
+  const properties = property.split(/, |,| /);
+  let aggregate = {};
+
+  for (const temp of properties) {
+    const nested = temp.split(".");
+    let result = obj;
+    for (const property of nested) {
+      result = result[property];
+    }
+    const lastProperty = nested.at(-1)
+    aggregate[lastProperty] = result;
+  }
+
+  return aggregate;
+}
+query(o, "grab isItCool, metadata.coolnessScore")
+```
+
+There's been a few changes, here they are explained line by line:
+
+<p class="mt-1v"/>
+
+- const properties = property.split(/, |,| /); <br/>

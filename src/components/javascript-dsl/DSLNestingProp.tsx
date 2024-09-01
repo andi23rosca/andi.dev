@@ -89,14 +89,14 @@ export const DSLNestingProps = () => {
 						setStep((s) => Math.max(0, s - 1));
 					}}
 				>
-					{"<<"}
+					{"<|"}
 				</Button>
 				<Button
 					onClick={() => {
 						setStep((s) => Math.min(steps.length - 1, s + 1));
 					}}
 				>
-					{">>"}
+					{"|>"}
 				</Button>
 			</div>
 		</div>

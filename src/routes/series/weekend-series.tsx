@@ -8,7 +8,8 @@ const WeekendSeries = () => {
 			<h1 class="text-xl font-bold mt-2v mb-1v">The weekend series</h1>
 			<p class="mt-1v">
 				This is where I'll explore complex subjects and distill them into small
-				projects that can be done in a weekend or less.
+				projects that can be followed along and completed within a weekend or
+				less.
 			</p>
 
 			<h2 class="font-bold uppercase mt-2v mb-1v">Posts</h2>

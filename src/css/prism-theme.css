@@ -139,9 +139,9 @@ pre[class*='language-'] {
   @apply font-bold text-black dark:text-white;
 }
 
-.token.regex {
-  background: #364135;
-}
+/* .token.regex {
+
+} */
 
 .token.bold {
   font-weight: bold;
