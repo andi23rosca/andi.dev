@@ -1,0 +1,75 @@
+---
+title: Write a domain-specific language in javascript in a weekend
+description: 
+date: 2024-09-01
+tags:
+  - javascript
+series: weekend-series
+---
+
+## Contents
+
+**A domain-specific language(DSL) is a small language made for a specific purpose.** It's the opposite of general languages like: JavaScript, Python, Go, etc. which are designed to do *everything*.
+
+Think of `SQL` or `HTML`. SQL is made to more easily query structured data, and HTML is made to more easily represent the structure of a document/website.
+
+## Why make your own DSL? 
+Because it's _cool_. It's also much easier to do than making a general language. And it might even be a useful tool to be able to whip out in certain cases.
+
+## Why in a weekend?
+I really liked the approachable nature of [Ray tracing in one weekend](https://raytracing.github.io/). It condensed a complex subject into a project that can be finished in more or less a weekend.
+
+This article will take less than that, a few hours to a day.
+
+## What are we making?
+We'll be making a DSL that lets us query JSON objects with a more readable syntax and quicker than with regular JS.
+
+We'll start small, but by the end we'll be able to write:
+```
+scores
+  score > 1000
+  desc name.firstName
+  grab name.lastName
+```
+instead of:
+```js lang="js"
+scores
+  .filter(s => s.score > 1000)
+  .sort((a,b) => -a.name.firstName.toLocalCompare(b.name.firstName))
+  .map(s => s.name.lastName)
+```
+
+Let's call this language `jayson`.
+
+## Overview
+
+It's probably best to start a DSL by planning out how what exactly it will do and how that will be accomplished.
+
+We'll do the opposite of that for this project. We'll start by implementing a super-basic version of the language, and build up more features on top of it as we go along.
+
+Here's a short list of what you should figure out when you start your next DSL project:
+
+<p class="h-1v"/>
+
+1. Determine scope
+    - What features are supported?
+    - What features are explicitly _**not**_ supported?
+2. Design the syntax
+    - How will the DSL look like?
+    - Does it have JS-style curly braces or significant whitespace like Python?
+    - What are the _keywords_ we're supporting?
+3. Implementation
+    - Which language will it be implemented in? (also called the "host language")
+    - How do we transform the DSL into host language instructions?
+    - Will the DSL features require run-time functionality?
+
+
+## From text to code
+
+There's a very simple pipeline that all DSLs have to go through. The details can be complicated but at a high level it's always just `text -> code`.
+
+You write some text somewhere, maybe a file, maybe a string. Some code then picks that up, extracts all of the information from the text and turns it into more code that does something.
+
+The first step of building `jayson` is to set up that pipeline.
+
+To keep things easy in the beginning, we'll be writing the `jayson` code directly as JS strings.

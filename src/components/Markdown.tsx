@@ -9,13 +9,13 @@ import {
 const P: ParentComponent = (props) => <p class="mt-1v">{props.children}</p>;
 
 const Ol: ParentComponent = (props) => (
-	<ol class="list-decimal">{props.children}</ol>
+	<ol class="list-decimal [&>li]:ml-3h">{props.children}</ol>
 );
 const Ul: ParentComponent = (props) => (
-	<ul class="list-square">{props.children}</ul>
+	<ul class="list-square [&>li]:ml-2h">{props.children}</ul>
 );
 
-const Li: ParentComponent = (props) => <li class="ml-2h">{props.children}</li>;
+const Li: ParentComponent = (props) => <li class="">{props.children}</li>;
 
 const Blockquote: ParentComponent = (props) => (
 	<blockquote class="my-2v pl-1h text-slate-700 dark:text-slate-200 font-medium italic grid grid-cols-[max-content_1fr]">

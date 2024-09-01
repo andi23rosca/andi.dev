@@ -19,7 +19,10 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 
 	return (
 		<article class="pb-5v">
-			<Title>{meta().title}</Title>
+			<Title>
+				{"andi.dev - "}
+				{meta()?.title}
+			</Title>
 			<Meta name="og:title" content={meta().title} />
 			<Meta name="description" content={meta().description} />
 			<Meta name="og:description" content={meta().description} />

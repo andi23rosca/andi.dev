@@ -17,9 +17,10 @@ export const blogPostsPlugin = (): Plugin => {
 					!filePath.includes("blogPostsPlugin.ts")
 				)
 					return;
-				const module = server.moduleGraph.getModuleById(virtualModuleId);
-				console.log("zzz", module);
-				if (module) server.reloadModule(module);
+				server.hot.send({
+					type: "full-reload",
+					path: "*",
+				});
 			});
 		},
 		resolveId(id) {

@@ -4,8 +4,8 @@ import { tags } from "~/data/tags";
 const Tags = () => {
 	return (
 		<div>
-			<h1 class="text-lg font-bold mb-6">All tags:</h1>
-			<ol class="flex flex-col gap-4">
+			<h1 class="text-xl font-bold mt-2v mb-1v">All tags:</h1>
+			<ol class="flex flex-col gap-1v list-square ml-2h">
 				<For each={Object.values(tags)}>
 					{(tag) => (
 						<li class="">
