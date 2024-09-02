@@ -99,6 +99,50 @@ details :last-child {
 }
 
 
+/* DITHER ANIMATION */
+.dither {
+  background-repeat: repeat;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  image-rendering: optimizeSpeed;
+  /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges;
+  /* Firefox                        */
+  image-rendering: -o-crisp-edges;
+  /* Opera                          */
+  image-rendering: -webkit-optimize-contrast;
+  /* Chrome (and eventually Safari) */
+  image-rendering: pixelated;
+  /* Universal support since 2021   */
+  image-rendering: optimize-contrast;
+  /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor;
+
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dither {
+    filter: invert(1)
+  }
+}
+
+.dither-1 {
+  background-image: url(/images/dither_light_3.png);
+}
+
+.dither-2 {
+  background-image: url(/images/dither_light_3.png);
+  background-position: 50px 50px;
+}
+
+.dither-3 {
+  background-image: url(/images/dither_light_3.png);
+  background-position: 100px 100px;
+}
+
+
 /* DEBUG UTILITIES */
 
 .debug .debug-grid {
