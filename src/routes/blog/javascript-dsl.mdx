@@ -1,6 +1,6 @@
 ---
 title: Write a domain-specific language in javascript in a weekend
-description: 
+description: A domain-specific language(DSL) is a small language made for a specific purpose as opposed to a general language like JavaScript. We'll be making a DSL called `jayson` that lets us query JSON objects with a more readable syntax than with regular JS.
 date: 2024-09-01
 tags:
   - javascript
@@ -8,10 +8,14 @@ series: weekend-series
 ---
 
 import { DSLNestingProps } from "~/components/javascript-dsl/DSLNestingProp"
+import { SubscribeForm } from "~/components/SubscribeForm"
+
 
 **A domain-specific language(DSL) is a small language made for a specific purpose.** It's the opposite of general languages like: JavaScript, Python, Go, etc. which are designed to do *everything*.
 
 Think of `SQL` or `HTML`. SQL is made to more easily query structured data, and HTML is made to more easily represent the structure of a document/website.
+
+We'll be making a DSL called `jayson` that lets us query JSON objects with a more readable syntax than with regular JS.
 
 ## Contents
 
@@ -21,12 +25,12 @@ Because it's _cool_. It's also much easier to do than making a general language.
 ## Why in a weekend?
 I really liked the approachable nature of [Ray tracing in one weekend](https://raytracing.github.io/). It condensed a complex subject into a project that can be finished in a few days.
 
-This article will take less than that, a few hours to a day.
+This will take less than that, a few hours most likely.
 
-## What are we making?
-We'll be making a DSL that lets us query JSON objects with a more readable syntax and quicker than with regular JS.
+## How does it look like?
 
-We'll start small, but by the end we'll be able to write:
+This is how you would query a list of objects in `jayson`:
+
 ```
 scores
   score > 1000
@@ -40,8 +44,6 @@ scores
   .sort((a,b) => -a.name.firstName.toLocalCompare(b.name.firstName))
   .map(s => s.name.lastName)
 ```
-
-Let's call this language `jayson`.
 
 ## Overview
 
@@ -95,7 +97,7 @@ const jayson = "grab name"
 
 `grab` is the first bit of functionality that we'll implement.
 
-Given the keywork `grab` and a property name, it will select that property from the object.
+Given the keyword `grab` and a property name, it will select that property from the object.
 
 So the code `grab name` should return `"My cool object"`.
 
@@ -107,7 +109,7 @@ const o = {
   isItCool: true,
 };
 const jayson = "grab name";
-const query = (obj, input) => {
+const query = (json, input) => {
   // logic will go here
 }
 query(o, jayson); // will return "My cool object"
@@ -116,11 +118,11 @@ query(o, jayson); // will return "My cool object"
 ### Parsing the jayson input
 The query function should make sure that the jayson code is in the right format, and then extract the relevant information from it so that we can use it.
 ```js lang="js" file="jayson.js"
-const query = (obj, input) => {
+const query = (json, input) => {
   const [keyword, property] = input.split(" ");
   if(keyword !== "grab") 
     throw Error("Invalid jayson syntax.");
-  return obj[property];
+  return json[property];
 }
 ```
 
@@ -145,11 +147,11 @@ const o = {
 ```
 Running `grab metadata.coolnessScore` will return `undefined`.
 
-The query function takes the whole of `metadata.coolnessScore` as one string and uses that as a proprty, which doesn't exist.
+The query function takes the whole of `metadata.coolnessScore` as one string and uses that as a property, which doesn't exist.
 
 It should split the properties by '.' instead and do multiple nested queries
 ```js lang="js" file="jayson.js"
-const query = (obj, input) => {
+const query = (json, input) => {
   const [keyword, property] = input.split(" ");
   if(keyword !== "grab") 
     throw Error("Invalid jayson syntax.");
@@ -157,7 +159,7 @@ const query = (obj, input) => {
   // Updated code
   const nested = property.split(".");
 
-  let result = obj; // result starts out as the full object
+  let result = json; // result starts out as the full object
 
   for (const property in nested) {
     // as we loop through the properties, first "metadata", then "coolnessScore",
@@ -170,7 +172,9 @@ const query = (obj, input) => {
 
 The for loop is doing the heavy lifting for handling the nested props. Here it is explained visually:
 
+---
 <DSLNestingProps />
+---
 
 ### Multiple properties
 How do we grab multiple properties from one object? We can't. Not yet at least.
@@ -183,40 +187,181 @@ We'll have to wrap the 2 values in either an array or an object.
 
 Either
 
-`[true, 100]` or `{isItCool: true, coolnessScore: 100}`
+`[true, 100]` or `{isItCool: true, "metadata.coolnessScore": 100}`
 
 The object wrapping is more readable so we'll go with that.
 
-For consitency, we'll change the single property grab to return an object too.
+For consistency, we'll change the single property grab to return an object too.
 
 `grab isItCool` will return `{isItCool: true}` instead of `true`.
-.split(/, |,| /)
 
 ```js lang="js" file="jayson.js"
 ...
-const query = (obj, input) => {
-  ...error handling code omitted
+const query = (json, input) => {
+	const [keyword, ...properties] = input.split(/, |,| /);
+	if (keyword !== "grab") throw Error("Invalid jayson syntax.");
 
-  const properties = property.split(/, |,| /);
-  let aggregate = {};
+  const aggregate = {};
 
-  for (const temp of properties) {
-    const nested = temp.split(".");
-    let result = obj;
+  for (const propertyPath of properties) {
+    const nested = propertyPath.split(".");
+    let result = json;
     for (const property of nested) {
       result = result[property];
     }
-    const lastProperty = nested.at(-1)
-    aggregate[lastProperty] = result;
+    aggregate[propertyPath] = result;
   }
-
-  return aggregate;
-}
+	
+	return aggregate;
+};
 query(o, "grab isItCool, metadata.coolnessScore")
 ```
 
 There's been a few changes, here they are explained line by line:
 
-<p class="mt-1v"/>
+---
+`const [keyword, ...properties] = input.split(/, |,| /);`
 
-- const properties = property.split(/, |,| /); <br/>
+We are now splitting the input by a regex (/, |,| /) that matches: a comma followed by a space, a comma, or a space. 
+
+Given an input **"grab isItCool, name, otherProp"**, it will split it into **["grab", "isItCool", "name", "otherProp"]**.
+
+We still get the first item in the list and assign it to `keyword`, but we gather the rest of the items into a `properties` array.
+
+---
+
+`const aggregate = {};`
+
+This is the object that will hold the final result, no matter if only one or multiple properties are grabbed.
+
+---
+
+`for (const propertyPath of properties) `
+
+We're now looping through the possibly multiple properties we extracted.
+
+For each one of them, we perform the nesting logic that was implemented before.
+
+---
+
+`aggregate[propertyPath] = result;`
+
+Previously, we would return the `result`. Since we're dealing with multiple properties now, instead of returning it we add it to the aggregate object, keyed by the full propertyPath.
+
+The `propertyPath` is the un-split string. 
+
+In `grab isItCool, metadata.coolnessScore`
+the propertyPath will become each of: "isItCool" and "metadata.coolnessScore" in the loop.
+
+---
+
+## Running queries on lists of objects
+
+The code we've written so far assumes that the json input will be an object.
+
+We should support running queries on lists as well.
+
+```
+query(
+  [
+    {label: "object 1", value: 23},
+    {label: "object 2", value: 57},
+  ],
+  "grab value"
+)
+```
+
+Will return `[{value: 23}, {value: 57}]`
+
+We'll add an extra variable in the query function:
+
+```js lang="js" file="jayson.js"
+...
+const list = Array.isArray(json);
+const aggregate = {};
+...
+```
+We can use list to check if we should handle the querying as an object or as an array.
+
+Next, we'll move the code that queries the object into a new function. (this new function is still inside the query function).
+
+```js lang="js" file="jayson.js"
+...
+const list = Array.isArray(json);
+
+// From declaring aggregate to the return, it's all in here now
+const queryObject = (toQuery) => {
+  const aggregate = {};
+  for (const propertyPath of properties) {
+    const nested = propertyPath.split(".");
+
+    // This has changed from `result = obj;`
+    // we're referencing the argument of the `queryObject` function now
+    let result = toQuery;
+    for (const property of nested) {
+      result = result[property];
+    }
+    aggregate[propertyPath] = result;
+  }
+  return aggregate;
+}
+```
+
+We've moved the aggregate logic inside the `queryObject` function, and there's no more return in the `query` function.
+
+```js lang="js" file="jayson.js"
+const list = Array.isArray(json);
+const queryObject = (toQuery) => {
+  ...
+}
+
+// New code:
+if (list)
+  return json.map(queryObject);
+return queryObject(json);
+```
+
+We're using list again to check if we should handle the json as a list or as an object. If it's a list, we map through all of the objects inside the list, and we call queryObject for each one.
+
+Otherwise, when json is an object, we call queryObject directly on it.
+
+This is the full code up until now:
+```js lang="js" file="jayson.js"
+const query = (json, input) => {
+  const [keyword, ...properties] = input.split(/, |,| /);
+  if (keyword !== "grab") throw Error("Invalid jayson syntax.");
+  
+  const list = Array.isArray(json);
+
+  const queryObject = (toQuery) => {
+    const aggregate = {};
+    for (const propertyPath of properties) {
+      const nested = propertyPath.split(".");
+      let result = toQuery;
+      for (const property of nested) {
+        result = result[property];
+      }
+      aggregate[propertyPath] = result;
+    }
+    return aggregate;
+  }
+
+  if (list)
+    return json.map(queryObject);
+  return queryObject(json);
+};
+```
+
+## Implementing more commands
+
+> This article is still in progress...
+
+We'll add `filter` and `order` commands to the jayson language next time.
+
+Check back in the near future or subscribe to get an email when the post is updated.
+I don't send spam.
+
+<SubscribeForm />
+
+
+If you spot any issues or want to leave a comment, shoot me an email at [hi@andi.dev](mailto:hi@andi.dev). I'll add interesting comments to the bottom of this article.

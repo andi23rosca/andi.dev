@@ -13,6 +13,7 @@
 
 * {
   box-sizing: border-box;
+  text-decoration-thickness: var(--border-thickness);
 }
 
 *::selection {
@@ -31,6 +32,8 @@
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
+
+  @apply select-none bg-white dark:bg-black px-1h shadow-box active:shadow-none active:translate-x-[3px] active:translate-y-[3px];
 }
 
 .button:focus:not(:active) {
@@ -103,3 +106,95 @@ code:not(pre code) {
 .debug img {
   /* border: 1px solid black; */
 }
+
+
+.formkit-form {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.formkit-form [data-style="clean"] {
+  @apply !pt-2v !px-0 !pb-1v;
+}
+
+.formkit-fields {
+  @apply !m-0;
+}
+
+.formkit-field {
+  @apply !m-0 !mr-2h;
+}
+
+.formkit-input {
+  border: var(--border-thickness) solid !important;
+  padding:
+    calc(var(--line-height) / 2 - var(--border-thickness)) calc(1ch - var(--border-thickness)) !important;
+  margin: 0 !important;
+  height: calc(var(--line-height) * 2) !important;
+  width: 100% !important;
+  overflow: visible !important;
+  line-height: normal !important;
+  -webkit-font-smoothing: inherit !important;
+  -moz-osx-font-smoothing: inherit !important;
+  -webkit-appearance: none !important;
+  @apply !font-medium;
+}
+
+.formkit-input:focus:not(:active) {
+  --border-thickness: 3px;
+  outline: none;
+}
+
+.formkit-submit {
+  border: var(--border-thickness) solid !important;
+  padding:
+    calc(var(--line-height) / 2 - var(--border-thickness)) calc(1ch - var(--border-thickness)) !important;
+  margin: 0 !important;
+  height: calc(var(--line-height) * 2) !important;
+  width: auto !important;
+  overflow: visible !important;
+  line-height: normal !important;
+  -webkit-font-smoothing: inherit !important;
+  -moz-osx-font-smoothing: inherit !important;
+  -webkit-appearance: none !important;
+  @apply !select-none !bg-white !text-black !px-1h !shadow-box !py-0;
+}
+
+.formkit-submit:active {
+  @apply !shadow-none !translate-x-[3px] !translate-y-[3px]
+}
+
+.formkit-alert-success {
+  border-width: 0 !important;
+  @apply !bg-transparent !text-black !m-0 !p-0 !font-bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .formkit-input {
+    @apply !border-white !bg-black !text-white;
+  }
+
+  .formkit-submit {
+    @apply !bg-black !text-white;
+  }
+
+  .formkit-alert-success {
+    @apply !text-white;
+  }
+}
+
+
+.formkit-submit span {
+  padding: 0 !important;
+}
+
+.formkit-submit:hover span {
+  background-color: transparent !important;
+}
+
+.formkit-submit:focus:not(:active) {
+  --border-thickness: 3px !important;
+  outline: none !important;
+}
+
+
+/* <div id="a6d9b30e24" class="formkit-alert formkit-alert-success" data-element="success" data-group="alert">Success! Check your email to confirm the subscription.</div> */

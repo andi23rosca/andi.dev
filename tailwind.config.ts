@@ -51,6 +51,7 @@ const config: Config = {
 			"slate-900": "#0f172a",
 			"slate-950": "#020617",
 			white: "#FFFFFF",
+			transparent: "transparent",
 		},
 		borderWidth: {
 			"2": "2px",

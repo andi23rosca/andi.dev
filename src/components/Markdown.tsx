@@ -90,7 +90,7 @@ const HeadlineLink: Component<{ link: string; class: string }> = (props) => {
 const H2: ParentComponent = (props) => (
 	<h2
 		id={headingLink(props.children)}
-		class="text-2xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h"
+		class="text-2xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h scroll-mt-2v"
 	>
 		{props.children}
 		<HeadlineLink class="w-5 h-5" link={`#${headingLink(props.children)}`} />
@@ -100,7 +100,7 @@ const H2: ParentComponent = (props) => (
 const H3: ParentComponent = (props) => (
 	<h3
 		id={headingLink(props.children)}
-		class="text-xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h"
+		class="text-xl leading-2 font-bold mt-2v mb-1v flex items-center gap-1h scroll-mt-2v"
 	>
 		{props.children}
 		<HeadlineLink class="w-4 h-4" link={`#${headingLink(props.children)}`} />
@@ -110,7 +110,7 @@ const H3: ParentComponent = (props) => (
 const H4: ParentComponent = (props) => (
 	<h4
 		id={headingLink(props.children)}
-		class="text-lg leading-1 font-bold mt-2v mb-1v flex items-center gap-1h"
+		class="text-lg leading-1 font-bold mt-2v mb-1v flex items-center gap-1h scroll-mt-2v"
 	>
 		{props.children}
 		<HeadlineLink class="w-3 h-3" link={`#${headingLink(props.children)}`} />
