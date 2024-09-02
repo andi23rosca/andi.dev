@@ -69,6 +69,35 @@ hr:after {
   }
 }
 
+details {
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) - var(--border-thickness)) 1ch;
+  margin-bottom: var(--line-height);
+}
+
+summary {
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+details[open] summary {
+  margin-bottom: var(--line-height);
+}
+
+details ::marker {
+  display: inline-block;
+  content: '▶';
+  margin: 0;
+}
+
+details[open] ::marker {
+  content: '▼';
+}
+
+details :last-child {
+  margin-bottom: 0;
+}
+
 
 /* DEBUG UTILITIES */
 
