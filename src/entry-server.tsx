@@ -16,14 +16,14 @@ export default createHandler(() => (
 					<div id="app">{children}</div>
 					{scripts}
 
-					<img
+					{/* <img
 						loading="lazy"
 						aria-hidden
 						src="/images/dither_light_3.png"
 						alt=""
 						width={1}
 						height={1}
-					/>
+					/> */}
 				</body>
 			</html>
 		)}
