@@ -5,6 +5,7 @@ export type Post = {
 	tags: string[];
 	series?: string;
 	featuredImage?: string;
+	featuredImageDesc?: string;
 	description: string;
 };
 

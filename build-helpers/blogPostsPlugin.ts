@@ -31,6 +31,9 @@ const processFiles = () => {
 export const blogPostsPlugin = (): Plugin => {
 	return {
 		name: "blog-posts-gen",
+		buildEnd() {
+			processFiles();
+		},
 		configureServer(server) {
 			server.watcher.on("change", (filePath) => {
 				if (

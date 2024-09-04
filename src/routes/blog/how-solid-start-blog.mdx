@@ -1,0 +1,367 @@
+---
+title: How I made this blog with SolidStart and MDX
+description: SolidStart is great! Except that the SSG support feels a bit bare-bones and there's some QoL improvements missing when working with MDX as well.
+date: 2024-09-04
+featuredImage: https://assets.solidjs.com/banner?type=SSG%20%2b%20MDX%20blog%20setup&background=tiles&project=%20
+featuredImageDesc: SolidJS banner
+tags:
+  - solidjs
+  - solid-start
+  - mdx
+  - markdown
+---
+import { Aside, PostImage } from "~/components/Markdown"
+import { Tree } from "~/components/Tree"
+
+[SolidStart](https://docs.solidjs.com/solid-start) is to SolidJs what NextJs is to React.
+
+It's a general "full-stack" framework that lets you SSR, CSR, SSG and all the other acronyms.
+
+It comes with docs for SSG and a `with-mdx` starter template that lets you get started quickly with a markdown-powered static website.
+
+**So why am I writing this then?**
+
+Because a tech blog has a few extra requirements that are not supported by default and I had to figure out myself. Hopefully it saves other people some time.
+
+<Aside>
+
+I assume you're already familiar with how SolidStart works, especially the file-based router.
+
+If you're not, [the official docs](https://docs.solidjs.com/solid-start/building-your-application/routing) do a better job at explaining it than I could.
+
+</Aside>
+
+
+> I'm not good at keeping things short so look through the contents if you're only interested in one particular thing
+
+## Contents
+
+<hr />
+
+## 1. List all posts programmatically
+
+The `FileRoutes` router is great. But it doesn't expose any of the information that it has on its routes.
+
+Most (if not all) blogs have some kind of list of latest posts on the homepage, or an archive somewhere. Ideally, we would generate that automatically, based on the files in the posts directory.
+
+Now, I only have 5 posts in total on here. I could very well just keep a manual list of posts in code somewhere and update it when I add a new post file.
+
+But I'd rather spend a day figuring out how to automate it, than 5 minutes doing it manually.
+
+The most painless way I found to set this up is using a custom vite plugin.
+
+### The vite plugin
+
+A vite plugin is just an object that conforms to the [vite plugin api](https://vitejs.dev/guide/api-plugin).
+
+```ts lang="ts" file="blogPostsPlugin.ts"
+import type { Plugin } from "vite";
+
+export const blogPostsPlugin = (): Plugin => {
+  return {
+    name: "blog-posts-gen",
+    async buildStart() {
+      processFiles();
+    },
+    configureServer(server) {
+      server.watcher.on("change", (filePath) => {
+        if (filePath.includes("/src/routes/blog")) {
+          processFiles();
+        }
+      });
+    },
+  };
+};
+```
+
+This is the whole plugin.
+
+It does 2 things:
+1. Calls `processFiles` when the build process starts (this is when you're building the website for prod)
+2. It hooks into vite's dev server listener, and calls `processFiles` when any file in the `/src/routes/blog` directory has changed.
+
+Make sure to add it to your app config
+
+```ts lang="ts" file="app.config.ts"
+export default defineConfig({
+  ...
+	vite: {
+		plugins: [
+            ...other plugins
+			blogPostsPlugin(), // Add it here
+		],
+	},
+  ...
+});
+```
+
+### Processing the files
+
+Your `processFiles` function could look very different from mine, but here's what mine does:
+
+```ts lang="ts"
+import { resolve, join } from "node:path";
+import { readdirSync, statSync, writeFileSync } from "node:fs";
+
+const processFiles = () => {
+	const outputFile = resolve("src/data/posts.json");
+	const blogDir = resolve("src/routes/blog");
+	const files = readdirSync(blogDir);
+
+	const blogPosts = files
+		.filter((file) => 
+        statSync(join(blogDir, file)).isFile() && file.endsWith(".mdx")
+      )
+		.map((file) => ({slug: file.replace(".mdx", "")}));
+    
+	writeFileSync(outputFile, JSON.stringify(blogPosts, null, 2), "utf-8");
+};
+```
+
+It gets all files ending with .mdx in the blog directory, and maps them to a json list of type `{ slug: string}[]`.
+
+Then writes that list out to `src/data/posts.json`.
+
+If the folder structure looks like
+
+<Tree tree={{
+  l: "/andi.dev",
+  c: [
+    {
+    l: "src",
+    c: [{
+      l: "routes", 
+      c: [
+        {
+          l: "blog",
+          c: [
+            "post-1.mdx",
+            "post-2.mdx",
+            "post-3.mdx",
+          ]
+        }
+      ]},
+      "(home).tsx"
+    ]
+  }]
+}} />
+
+Then the json file will look like
+
+```json lang="json" file="posts.json"
+[
+  { "slug": "post-1" },
+  { "slug": "post-2" },
+  { "slug": "post-3" }
+]
+```
+
+I'm using typescript so I have an extra file that imports the JSON and adds types to it:
+```ts lang="ts" file="posts.ts"
+import JSONPosts from "./posts.json";
+type Post = { slug: string };
+export const posts: Post[] = JSONPosts;
+```
+
+### Using the posts list
+Now that it's available as a module export you can import it and use it anywhere in your solid component:
+
+```tsx lang="tsx" file="PostsList.tsx"
+<For each={posts}>
+  {post => <a href={`/blog/${post.slug}`}>{post.slug}<a/>}
+</For>
+```
+
+The best part of this (to me), is that the json file gets updated whenever there's a change in the `blog` directory. 
+
+That will trigger vite's HMR and automatically refresh any modules depending on it while you're developing locally.
+
+
+## 2. Keeping a post's metadata in the same file as the content
+
+Posts do not only have their content. They usually also have some metadata associated with them.
+
+The ones I wanted to support were:
+- Title
+- Publishing date
+- List of tags
+
+I'm picky about co-locating things under the same domain.
+
+In this case, I wanted to keep the metadata for a post in the same mdx file as where the content is.
+
+The usual way of adding metadata to a markdown file is using the [frontmatter](https://github.com/remarkjs/remark-frontmatter?tab=readme-ov-file#use).
+
+I also wanted to use this metadata from my dynamic posts list.
+
+You might've noticed the component above was using the slug to render the post links:
+
+```tsx lang="tsx"
+<a href={`/blog/${post.slug}`}>{post.slug}<a/>
+```
+
+But what should actually happen is using the post's title instead
+
+```tsx lang="tsx"
+<a href={`/blog/${post.slug}`}>{post.title}<a/>
+```
+
+### Parsing the frontmatter
+
+I ended up modifying the `processFiles` function to also parse the file frontmatter, using [to-vfile](https://www.npmjs.com/package/to-vfile?activeTab=readme) and [vfile-matter](https://www.npmjs.com/package/vfile-matter?activeTab=readme) together.
+
+```ts lang="ts"
+const processFiles = () => {
+	const outputFile = resolve("src/data/posts.json");
+	const blogDir = resolve("src/routes/blog");
+	const files = readdirSync(blogDir);
+
+	const blogPosts = files
+		.filter((file) => 
+        statSync(join(blogDir, file)).isFile() && file.endsWith(".mdx")
+      )
+		.map((file) => {
+
+      // Turn each of the post files into vfiles
+			const vfile = readSync(resolve("src/routes/blog", file));
+      // Parse their frontmatter
+			matter(vfile);
+
+      return { 
+        // Add the frontmatter properties to each post's metadata
+				...(f.data.matter as object),
+        slug: file.replace(".mdx", "")
+      }
+    });
+    
+	writeFileSync(outputFile, JSON.stringify(blogPosts, null, 2), "utf-8");
+};
+```
+
+I write the frontmatter in yaml, so when I add the following to the top of a post:
+
+```md lang="md" file="post-1.mdx"
+---
+title: This is my first post!
+date: 2024-09-04
+tags:
+  - solidjs
+  - solid-start
+---
+```
+
+Then the metadata json will become:
+
+```json lang="json"
+{
+  "slug": "post-1",
+  "title": "This is my first post!",
+  "date": "2024-09-04",
+  "tags": ["solidjs", "solid-start"]
+}
+```
+
+I can then use that metadata whenever I want to, and especially when rendering lists of posts:
+
+```tsx lang="tsx"
+<a href={`/blog/${post.slug}`}>{post.title}<a/>
+```
+
+
+---
+**Important info:**
+
+You should also install `remark-frontmatter` and add it to the remarkPlugins in app.config
+
+```ts lang="ts" file="app.config.ts"
+export default defineConfig({
+  ...
+	vite: {
+		plugins: [
+			mdx.withImports({})({
+				remarkPlugins: [remarkFrontmatter], // Add it here
+			}),
+		],
+	},
+  ...
+});
+```
+
+The reason for that is that you want the frontmatter to be excluded when the solidjs mdx pipeline transforms the mdx file into static html.
+
+If you don't do this, you'll see the frontmatter rendered as html when you navigate to a post's page.
+
+---
+
+## 3. Compile-time code highlighting
+
+The grumpy engineers on HackerNews got to me. I wanted to support code highlighting even if someone has javascript disabled.
+
+That means moving the highlighting process from running on the client (the browser, using js), to it running when the static HTML is being generated.
+
+I'm using [refractor](https://github.com/wooorm/refractor) for that. It's a wrapper around `prismjs` that lets you do highlighting on virtual files.
+
+To hook it into the solid-mdx building process, I had to create my own custom rehype plugin:
+
+```ts lang="ts" file="mdxPrism.ts"
+import { visit } from "unist-util-visit";
+import { toString as nodeToString } from "hast-util-to-string";
+import { refractor } from "refractor";
+import tsx from "refractor/lang/tsx.js";
+
+refractor.register(tsx);
+
+export const mdxPrism = () => {
+	return (tree: any) => {
+		visit(tree, "element" as any, visitor);
+	};
+
+	function visitor(node: any, index: number | undefined, parent: any) {
+		if (parent.type !== "mdxJsxFlowElement") {
+			return;
+		}
+
+		const attrs = parent.attributes.reduce((a: any, c: any) => {
+			if (c.type === "mdxJsxAttribute") {
+				a[c.name] = c.value;
+			}
+			return a;
+		}, {});
+
+		const lang = attrs.lang;
+		if (!lang) {
+			return;
+		}
+
+		const result = refractor.highlight(nodeToString(node), lang);
+		node.children = result.children;
+	}
+};
+
+```
+
+I won't go through the details of what it does exactly. The gist of it is that it finds the code blocks from the parsed markdown and uses refractor on them.
+
+It needs to be added to the app config as well, under rehypePlugins
+
+```ts lang="ts" file="app.config.ts"
+export default defineConfig({
+  ...
+	vite: {
+		plugins: [
+			mdx.withImports({})({
+				rehypePlugins: [mdxPrism], // Add it here
+			}),
+		],
+	},
+  ...
+});
+```
+
+Refractor generates the same class names as prism, so as long as you have a prism theme css file loaded, it'll show some nice highlighting.
+
+## Full code example
+
+I'm keeping the code for this website in a public [github repo](https://github.com/andi23rosca/andi.dev).
+
+I tried to keep this article small, so if I missed anything, feel free look over the full working implementation in there.

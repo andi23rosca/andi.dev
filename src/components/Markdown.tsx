@@ -5,6 +5,7 @@ import {
 	type JSXElement,
 	createSignal,
 	Show,
+	onMount,
 } from "solid-js";
 
 const P: ParentComponent = (props) => <p class="mt-1v">{props.children}</p>;
@@ -133,15 +134,48 @@ const A: ParentComponent<{ href: string }> = (props) => {
 	);
 };
 
+function gridCellDimensions() {
+	const element = document.createElement("div");
+	element.style.position = "fixed";
+	element.style.height = "var(--line-height)";
+	element.style.width = "1ch";
+	document.body.appendChild(element);
+	const rect = element.getBoundingClientRect();
+	document.body.removeChild(element);
+	return { width: rect.width, height: rect.height };
+}
+
 export const PostImage: Component<{
 	src: string;
 	alt: string;
 	attr?: JSXElement;
 	class?: string;
 }> = (props) => {
+	let ref!: HTMLImageElement;
+
+	onMount(() => {
+		const cell = gridCellDimensions();
+		function setHeightFromRatio() {
+			const ratio = ref.naturalWidth / ref.naturalHeight;
+			const rect = ref.getBoundingClientRect();
+			const realHeight = rect.width / ratio;
+			const diff = cell.height - (realHeight % cell.height);
+			ref.style.setProperty("padding-bottom", `${diff}px`);
+		}
+
+		if (ref.complete) {
+			setHeightFromRatio();
+		} else {
+			ref.addEventListener("load", () => {
+				setHeightFromRatio();
+			});
+		}
+	});
+
 	return (
 		<div>
 			<img
+				ref={ref}
 				src={props.src}
 				alt={props.alt}
 				class="w-full"

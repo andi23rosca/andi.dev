@@ -3,7 +3,7 @@ import type { RouteSectionProps } from "@solidjs/router";
 import { Meta, Title } from "@solidjs/meta";
 import { posts } from "~/data/posts";
 import { MDXProvider } from "solid-mdx";
-import { markdownComponents } from "~/components/Markdown";
+import { markdownComponents, PostImage } from "~/components/Markdown";
 import dayjs from "dayjs";
 import "../css/prism-theme.css";
 import type { Post } from "~/types";
@@ -24,6 +24,13 @@ const Blog = (props: RouteSectionProps<unknown>) => {
 			<Meta name="description" content={meta().description} />
 			<Meta name="og:description" content={meta().description} />
 
+			<Show when={meta().featuredImage}>
+				<PostImage
+					class="mb-3v saturate-0"
+					src={meta().featuredImage || ""}
+					alt={meta().featuredImageDesc || ""}
+				/>
+			</Show>
 			<h1 class="text-2v leading-2 font-bold mb-1v">{meta().title}</h1>
 
 			<div class="flex items-center gap-4h mb-2v text-sm leading-1">
