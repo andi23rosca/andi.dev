@@ -1,7 +1,7 @@
 [
 	{
 		"title": "How I made this blog with SolidStart and MDX",
-		"description": "SolidStart is great! Except that the SSG support feels a bit bare-bones and there's some QoL improvements missing when working with MDX as well.",
+		"description": "Goes through creating lists of posts programmatically (that can be used at runtime), generating metadata for each post, and doing code highlighting at compile-time.",
 		"date": "2024-09-04",
 		"featuredImage": "https://assets.solidjs.com/banner?type=SSG%20%2b%20MDX%20blog%20setup&background=tiles&project=%20",
 		"featuredImageDesc": "SolidJS banner",
