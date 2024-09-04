@@ -1,5 +1,5 @@
 import { Posts } from "~/components/Posts";
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import { series as allSeries } from "~/data/series";
 
 const WeekendSeries = () => {

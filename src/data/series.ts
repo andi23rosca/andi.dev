@@ -1,4 +1,4 @@
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import type { Series } from "~/types";
 
 export const series: Record<string, Series> = posts.reduce(

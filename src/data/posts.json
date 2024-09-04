@@ -1,0 +1,33 @@
+[
+	{
+		"title": "Write a domain-specific language in javascript in a weekend",
+		"description": "A domain-specific language(DSL) is a small language made for a specific purpose as opposed to a general language like JavaScript. We'll be making a DSL called `jayson` that lets us query JSON objects with a more readable syntax than with regular JS.",
+		"date": "2024-09-01",
+		"tags": ["javascript"],
+		"series": "weekend-series",
+		"slug": "javascript-dsl"
+	},
+	{
+		"title": "Making a shitty programming language from scratch. Part 1.5",
+		"description": "A smaller installment after part 1, focused on cleaning up the code and adding a couple of useful utils that'll be needed in part 2.",
+		"date": "2023-11-30",
+		"featuredImage": "/images/wobbly_wheel.png",
+		"featuredImageDesc": "A sketch of a wobbly wheel",
+		"tags": ["the-shitty-series", "make-a-language", "javascript"],
+		"slug": "shitty-language-part-1-5"
+	},
+	{
+		"title": "Making a shitty programming language from scratch. Part 1",
+		"description": "I believe the best way to learn how things work is to make your own shitty version of them from scratch. Does creating a programming language feel like some forbidden knowledge that only the top geniuses have access to? It shouldn't.",
+		"date": "2023-11-22",
+		"tags": ["the-shitty-series", "make-a-language", "javascript"],
+		"slug": "shitty-language-part-1"
+	},
+	{
+		"date": "2023-11-21",
+		"tags": ["solidjs", "webdev"],
+		"title": "Syncing solid-js resources to a global store",
+		"description": "Most complex web-apps make use of a global state, and tying data management and fetching to components makes it clunky to properly sync data between global and local. Solve all issues in your solid-js app by using the storage option on resources.",
+		"slug": "solid-resource-storage"
+	}
+]

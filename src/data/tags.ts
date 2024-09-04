@@ -1,4 +1,4 @@
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import type { Tag } from "~/types";
 
 export const tags: Record<string, Tag> = posts.reduce(

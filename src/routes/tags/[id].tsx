@@ -1,6 +1,6 @@
 import type { RouteSectionProps } from "@solidjs/router";
 import { type Component, Show } from "solid-js";
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import { Posts } from "~/components/Posts";
 import { tags } from "~/data/tags";
 

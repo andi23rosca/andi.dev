@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import { Posts } from "~/components/Posts";
 
 const links = [

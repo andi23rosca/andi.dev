@@ -1,7 +1,7 @@
 import { For, Show } from "solid-js";
 import type { RouteSectionProps } from "@solidjs/router";
 import { Meta, Title } from "@solidjs/meta";
-import { posts } from "virtual:blog-posts";
+import { posts } from "~/data/posts";
 import { MDXProvider } from "solid-mdx";
 import { markdownComponents } from "~/components/Markdown";
 import dayjs from "dayjs";
