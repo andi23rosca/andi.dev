@@ -9,7 +9,7 @@ export const Layout: ParentComponent = (props) => {
 			<a href="#main-content" class="sr-only">
 				Skip to main content
 			</a>
-			<div class="flex flex-col min-h-screen py-1v px-2h max-w-thread mx-auto relative overflow-x-hidden leading-1 box-border decoration-2 underline-offset-2">
+			<div class="flex flex-col min-h-screen py-1v px-2h max-w-thread mx-auto relative overflow-x-clip leading-1 box-border decoration-2 underline-offset-2">
 				<header class="flex flex-col items-center justify-center gap-2v px-4h py-2v">
 					<a href="/" class="text-2v leading-2 font-bold">
 						<TextHoverJump text="~/andi.dev" />

@@ -1,3 +1,4 @@
+import { createViewportObserver } from "@solid-primitives/intersection-observer";
 import {
 	type Component,
 	createMemo,
@@ -6,6 +7,7 @@ import {
 	createSignal,
 	Show,
 	onMount,
+	onCleanup,
 } from "solid-js";
 
 const P: ParentComponent = (props) => <p class="mt-1v">{props.children}</p>;
@@ -182,6 +184,29 @@ export const PostImage: Component<{
 				classList={{ [props.class || ""]: !!props.class }}
 			/>
 			{props.attr}
+		</div>
+	);
+};
+
+export const ToC: ParentComponent = (props) => {
+	let ref!: HTMLDivElement;
+
+	onMount(() => {
+		const { top } = ref.getBoundingClientRect();
+		const listener = () => {
+			if (window.scrollY >= top) {
+			}
+			// console.log("zzz", window.scrollY);
+		};
+		window.addEventListener("scroll", listener, { passive: true });
+		onCleanup(() => {
+			window.removeEventListener("scroll", listener);
+		});
+	});
+
+	return (
+		<div class="" ref={ref}>
+			{props.children}
 		</div>
 	);
 };

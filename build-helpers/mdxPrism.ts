@@ -14,6 +14,32 @@ export const mdxPrism = () => {
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	function visitor(node: any, index: number | undefined, parent: any) {
+		// if (parent.type === "root") {
+		// 	// node.value += '\nimport { ToC } from "~/components/Markdown"';
+
+		// 	console.log("zzz", JSON.stringify([parent.children[0]], null, 2));
+		// 	return;
+		// }
+
+		// Table of contents stuff, unrelated to mdxPrism but I'm too lazy to move it to a new plugin
+		if (
+			parent.type === "root" &&
+			node.tagName === "h2" &&
+			node.children?.[0]?.type === "text" &&
+			node.children?.[0]?.value === "Contents"
+		) {
+			const tocList = parent.children[(index || 0) + 2];
+
+			const newNode = {
+				type: "mdxJsxFlowElement",
+				name: "ToC",
+				children: [node, { type: "text", value: "\n" }, tocList],
+			};
+
+			parent.children.splice(index, 3, newNode);
+			return;
+		}
+
 		if (parent.type !== "mdxJsxFlowElement") {
 			return;
 		}
