@@ -8,7 +8,7 @@
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   :root {
     --text-color: white;
   }
@@ -130,8 +130,11 @@ details :last-child {
   pointer-events: none;
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   .dither {
+    filter: invert(1)
+  }
+  .wave-image {
     filter: invert(1)
   }
 }
@@ -293,7 +296,7 @@ code:not(pre code) {
   @apply !bg-transparent !text-black !m-0 !p-0 !font-bold;
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   .formkit-input {
     @apply !border-white !bg-black !text-white;
   }
@@ -321,5 +324,8 @@ code:not(pre code) {
   outline: none !important;
 }
 
+.pixelated {
+  image-rendering: pixelated;
+}
 
 /* <div id="a6d9b30e24" class="formkit-alert formkit-alert-success" data-element="success" data-group="alert">Success! Check your email to confirm the subscription.</div> */

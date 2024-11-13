@@ -14,17 +14,11 @@ const Homepage = () => {
 			<section class="flex flex-col sm:flex-row gap-2v sm:gap-3h">
 				<div class="font-medium">
 					<div class="flex items-end mb-1v gap-1h">
-						<picture>
-							<source
-								srcset="/images/wave-pixel-dark.png"
-								media="(prefers-color-scheme:dark)"
-							/>
-							<img
-								class="inline-block h-2v select-none"
-								alt="wave emoji"
-								src="/images/wave-pixel.png"
-							/>
-						</picture>
+						<img
+							class="inline-block h-2v select-none wave-image"
+							alt="wave emoji"
+							src="/images/wave-pixel.png"
+						/>
 						<p>Hi, Andi here.</p>
 					</div>
 					<p class="mb-1v">

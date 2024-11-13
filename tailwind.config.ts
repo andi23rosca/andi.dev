@@ -24,6 +24,7 @@ const buildSpacing = () => {
 
 const config: Config = {
 	content: ["./src/**/*.{html,tsx,mdx}"],
+	darkMode: "class",
 	theme: {
 		fontFamily: {
 			mono: '"JetBrains Mono", monospace;',

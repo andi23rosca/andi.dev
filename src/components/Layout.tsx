@@ -1,7 +1,13 @@
 import { A } from "@solidjs/router";
 import { For, type ParentComponent } from "solid-js";
 import { TextHoverJump } from "./TextHoverJump";
-import { Button } from "./Button";
+import { clientOnly } from "@solidjs/start";
+
+const DarkModeToggle = clientOnly(() =>
+	import("./DarkModeToggle").then((r) => ({
+		default: r.DarkModeToggle,
+	})),
+);
 
 export const Layout: ParentComponent = (props) => {
 	return (
@@ -9,11 +15,13 @@ export const Layout: ParentComponent = (props) => {
 			<a href="#main-content" class="sr-only">
 				Skip to main content
 			</a>
-			<div class="flex flex-col min-h-screen py-1v px-2h max-w-thread mx-auto relative overflow-x-hidden leading-1 box-border decoration-2 underline-offset-2">
+			<div class="flex flex-col min-h-screen pt-2v py-1v px-2h max-w-thread mx-auto relative overflow-x-hidden leading-1 box-border decoration-2 underline-offset-2">
 				<header class="flex flex-col items-center justify-center gap-2v px-4h py-2v">
 					<a href="/" class="text-2v leading-2 font-bold">
 						<TextHoverJump text="~/andi.dev" />
 					</a>
+
+					<DarkModeToggle />
 
 					<nav>
 						<ul class="flex items-center gap-7h">
