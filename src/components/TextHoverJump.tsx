@@ -2,7 +2,7 @@ import { For, type Component } from "solid-js";
 
 export const TextHoverJump: Component<{ text: string }> = (props) => {
 	return (
-		<span class="jump-text flex items-baseline">
+		<span class="jump-text inline-flex items-baseline">
 			<For each={[...props.text]}>
 				{(i, index) => (
 					<span

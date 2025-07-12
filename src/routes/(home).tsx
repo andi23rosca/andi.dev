@@ -1,6 +1,7 @@
 import { For } from "solid-js";
 import { posts } from "~/data/posts";
 import { Posts } from "~/components/Posts";
+import { TextHoverJump } from "~/components/TextHoverJump";
 
 const links = [
 	"https://github.com/andi23rosca",
@@ -28,19 +29,19 @@ const Homepage = () => {
 					<p>
 						Say hi:{" "}
 						<a
-							class="underline"
+							class="[&_span]:underline"
 							target="_blank"
 							rel="noreferrer"
 							href="mailto:hi@andi.dev"
 						>
-							hi@andi.dev
+							<TextHoverJump text="hi@andi.dev" />
 						</a>
 					</p>
 				</div>
-				<ul class="sm:mt-3v text-slate-600 dark:text-slate-200 text-base sm:text-sm leading-1">
+				<ul class="sm:mt-3v text-base sm:text-sm leading-1">
 					<For each={links}>
 						{(link) => (
-							<li class="list-square hover:text-black dark:hover:text-white ml-2h leading-1">
+							<li class="list-square ml-2h leading-1">
 								<a
 									target="_blank"
 									rel="noreferrer"
